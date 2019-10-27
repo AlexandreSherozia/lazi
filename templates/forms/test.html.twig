@@ -1,0 +1,83 @@
+<div id="m_repeater_1">
+    <div class="form-group  m-form__group row" id="m_repeater_1">
+        <label class="col-lg-2 col-form-label">Critères:</label>
+        <div data-repeater-list="" class="col-lg-10">
+            <div data-repeater-item class="form-group m-form__group row align-items-center">
+                <div class="col-md-3">
+                    <div class="m-form__group m-form__group--inline">
+                        <div class="m-form__label">
+                            <label>Name:</label>
+                        </div>
+                        <div class="m-form__control">
+                            <input type="email" class="form-control m-input" placeholder="Enter full name">
+                        </div>
+                    </div>
+                    <div class="d-md-none m--margin-bottom-10"></div>
+                </div>
+                <div class="col-md-3">
+                    <div class="m-form__group m-form__group--inline">
+                        <div class="m-form__label">
+                            <label class="m-label m-label--single">Number:</label>
+                        </div>
+                        <div class="m-form__control">
+                            <input type="email" class="form-control m-input" placeholder="Enter contact number">
+                        </div>
+                    </div>
+                    <div class="d-md-none m--margin-bottom-10"></div>
+                </div>
+                <div class="col-md-2">
+                    <div class="m-radio-inline">
+                        <label class="m-checkbox m-checkbox--state-success">
+                            <input type="checkbox"> Primary
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div data-repeater-delete="" class="btn-sm btn btn-danger m-btn m-btn--icon m-btn--pill">
+                                                                        <span>
+                                                                            <i class="la la-trash-o"></i>
+                                                                            <span>Delete</span>
+                                                                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#<div class="m-form__seperator m-form__seperator--dashed  m-form__seperator--space m--margin-bottom-40"></div>#}
+
+    <div class="m-form__group form-group row">
+        <label class="col-lg-2 col-form-label"></label>
+        <div class="col-lg-4">
+            <div data-repeater-create="" class="btn btn btn-sm btn-brand m-btn m-btn--icon m-btn--pill m-btn--wide">
+                                                                <span>
+                                                                    <i class="la la-plus"></i>
+                                                                    <span>Add</span>
+                                                                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{#======================================================================================================================#}
+               <a href="#" id="add_category" class="btn btn-default">Ajouter Contact</a>
+               <div id="test">
+                   {{ form_row(entrepriseForm.contact) }}
+               </div>
+
+
+            <ul id="email-fields-list"
+                data-prototype="{{ form_widget(entrepriseForm.contact.vars.prototype)|e }}"
+                data-widget-tags="{{ '<li></li>'|e }}">
+                {% for emailField in entrepriseForm.contact %}
+                    <li>
+                        {{ form_errors(emailField) }}
+                        {{ form_widget(emailField) }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <button type="button" class="add-another-collection-widget btn btn-dark" data-list="#email-fields-list">Rajouter un Contact privilégié</button>

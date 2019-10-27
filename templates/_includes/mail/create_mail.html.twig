@@ -1,0 +1,99 @@
+{{ form_start(messengerForm, {'attr': {'class': 'm-form m-form--fit m-form--label-align-right', 'id': 'messengerForm'}}) }}
+<div class="row">
+    <div class="offset-2 col-lg-5">
+        <h3 style="color: #a7a7a7;">{{ "emailing ffcb"|upper }}</h3>
+    </div>
+
+    {{ form_widget(messengerForm.isDraft) }}
+
+    <button type="submit" class="btn btn-success offset-1" style="width: 70px; height: 40px;">
+        <span class="flaticon-paper-plane"></span>
+    </button>
+</div>
+
+<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"
+     style="margin: 30px 3px"></div>
+
+<div class="form-group m-form__group row">
+    <div class="col-lg-12">
+        <div class="row">
+            <label for="example-text-input" class="col-lg-2 col-form-label"
+                   style="color: #ff5e6d">{{ 'à'|upper }} :</label>
+            <div class="col-lg-10">
+                <span class="red">{{ form_errors(messengerForm.recipientEmail) }}</span>
+                {{ form_widget(messengerForm.recipientEmail, {
+                    attr: {
+                        class: 'form-control',
+                        style: 'border: 1px solid grey',
+                    }
+                }) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"
+     style="margin: 30px 3px"></div>
+
+<div class="form-group m-form__group row">
+    <div class="col-lg-12">
+        <div class="row">
+
+            <label for="example-text-input" class="col-lg-2 col-form-label"
+                   style="color: #ff5e6d">De :</label>
+            <div class="col-lg-10">
+                <span class="red">{{ form_errors(messengerForm.senderFrom) }}</span>
+                {{ form_widget(messengerForm.senderFrom, {
+                    attr: {
+                        class: 'form-control',
+                        style: 'border: 1px solid grey',
+                    }
+                }) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"
+     style="margin: 30px 3px"></div>
+
+<div class="form-group m-form__group row">
+    <div class="col-lg-12">
+        <div class="row">
+            <label for="example-text-input" class="col-lg-2 col-form-label red"
+                   style="color: #ff5e6d">{{ 'Cc' }} :</label>
+            <div class="col-lg-10">
+                <span class="red">{{ form_errors(messengerForm.ccRecipientEmail) }}</span>
+                {{ form_widget(messengerForm.ccRecipientEmail, {
+                    attr: {
+                        class: 'form-control',
+                        style: 'border: 1px solid grey',
+                    }
+                }) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+<div class="form-group m-form__group row" style="margin-bottom: 20px">
+    <div class="col-lg-12">
+        <div class="row" style="border-bottom: 1px solid grey">
+            <label for="example-text-input" class="col-lg-2 col-form-label red"
+                   style="color: #ff5e6d">{{ 'Objet' }} :</label>
+            <div class="col-lg-10">
+                {{ form_widget(messengerForm.messageHeader) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group m-form__group row">
+    <div class="col-lg-12">
+        {{ form_widget(messengerForm.messageBody, {'attr': {'class': 'summernote'}}) }}
+    </div>
+</div>
+{{ form_widget(messengerForm._token) }}
+{{ form_end(messengerForm, {'render_rest': false }) }}
+

@@ -1,0 +1,178 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} Groupes/Users
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+
+        {{ form_start(userForm, {'attr': {'id': 'ffcb_admin_user', 'class': 'm-form__group form-group', 'autocomplete': 'off'}}) }}
+        <div class="row">
+            <fieldset class="col-lg-6 ffcb-selector-border">
+                <legend class="col-lg-7">Création d'Utilisateur</legend>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Email :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.email, {'attr': {'autocomplete': 'nope'}}) }}</span>
+                        {{ form_widget(userForm.email, {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Prénom :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.firstName) }}</span>
+                        {{ form_widget(userForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Nom :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.lastName) }}</span>
+                        {{ form_widget(userForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">M.p. provisoire :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.password) }}</span>
+                        {{ form_widget(userForm.password, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <hr>
+
+                <label>Assignez un droit à l'utilisateur</label>
+                <div class="row">
+                    <span style="color: #fe0017">{{ form_errors(userForm.roles) }}</span>
+                    {% for role in userForm.roles.children %}
+                        <div class="form-group m-form__group offset-1 col-lg-3 ffcb-selector-border">
+                            <label for="example-text-input" class="text-center">{{ form_label(role) }}</label>
+                            <div class="offset-1 col-lg-8 text-center">
+                                {{ form_widget(role) }}
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+                {# SUBMIT #}
+                <div class="row">
+                    <div class="offset-8">
+                        <button type="submit" class="btn btn-primary" style="margin: 20px">Valider</button>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <fieldset class="col-lg-5">
+                <legend class="col-lg-11">Liste actuelle des utilisateurs</legend>
+
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-10">
+                        <div class="m-demo__preview">
+                            <div class="m-list-timeline">
+                                <div class="m-list-timeline__items">
+                                    {% if listeUtilisateurs['admins'] is not empty %}
+                                        {% for user in listeUtilisateurs['admins'] %}
+                                            <div class="m-list-timeline__item">
+                                                <span class="m-list-timeline__badge"></span>
+                                                <span class="m-list-timeline__text"><a href="{{ path('edit_user', {'id': user.id, 'by': 'admin' }) }}">{{ user.firstName|capitalize }}</a></span>
+                                                <span class="m-list-timeline__text">{{ user.lastName|capitalize }}</span>
+                                                <span class="m-badge m-badge--danger m-badge--wide">Admin</span>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-10">
+                        <div class="m-demo__preview">
+                            <div class="m-list-timeline">
+                                <div class="m-list-timeline__items">
+                                    {% if listeUtilisateurs['ffcb'] is not empty %}
+                                        {% for user in listeUtilisateurs['ffcb'] %}
+                                            <div class="m-list-timeline__item">
+                                                <span class="m-list-timeline__badge"></span>
+                                                <span class="m-list-timeline__text">
+                                                    <a href="{{ path('edit_user', {'id': user.id, 'by': 'admin' }) }}">{{ user.firstName|capitalize }}</a></span>
+                                                <span class="m-list-timeline__text">{{ user.lastName|capitalize }}</span>
+                                                <span class="m-badge m-badge--info m-badge--info"  style="padding:1px 8px;">FFCB</span>
+
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="m-list-timeline__item">
+                                            <span class="m-list-timeline__badge"></span>
+                                            <span class="m-list-timeline__text">0</span>
+                                            <span class="m-list-timeline__text">Utilisateur</span>
+                                            <span class="m-badge m-badge--info m-badge--info"  style="padding:1px 8px;">FFCB</span>
+
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-10">
+                        <div class="m-demo__preview">
+                            <div class="m-list-timeline">
+                                <div class="m-list-timeline__items">
+                                    {% if listeUtilisateurs['ffcb'] is not empty %}
+                                        {% for user in listeUtilisateurs['comptable'] %}
+                                            <div class="m-list-timeline__item">
+                                                <span class="m-list-timeline__badge"></span>
+                                                <span class="m-list-timeline__text">
+                                                    <a href="{{ path('edit_user', {'id': user.id, 'by': 'admin' }) }}">{{ user.firstName|capitalize }}</a></span>
+                                                <span class="m-list-timeline__text">{{ user.lastName|capitalize }}</span>
+                                                <span class="m-badge m-badge--warning m-badge--warning"  style="padding:1px 8px;">Comptable</span>
+
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="m-list-timeline__item">
+                                            <span class="m-list-timeline__badge"></span>
+                                            <span class="m-list-timeline__text">0</span>
+                                            <span class="m-list-timeline__text">Utilisateur</span>
+                                            <span class="m-badge m-badge--warning m-badge--warning"  style="padding:1px 8px;">Comptable</span>
+
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+
+        {{ form_widget(userForm._token) }}
+        {{ form_end(userForm, {'render_rest': false }) }}
+        {# end USER CREATION FORM #}
+
+
+    </div>
+
+{% endblock %}
+
+

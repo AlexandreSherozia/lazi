@@ -1,0 +1,276 @@
+<div class="m-portlet m-portlet--mobile">
+    <div class="m-portlet__head">
+        <div class="m-portlet__head-caption">
+            <div class="m-portlet__head-title">
+                <h3 class="m-portlet__head-text">
+                    {% if advancedSearchResults|length > null %}
+                        <span style="border:1px solid #5867dd; width: 50px;height: 50px; border-radius: 50%;padding-top: 14px;text-align: center; color: #5867dd;margin-right: 5px">{{ advancedSearchResults|length }}</span>
+                        Résultats de la recherche Adhérents
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+        <div class="m-portlet__head-tools">
+            <ul class="m-portlet__nav">
+                <li class="m-portlet__nav-item">
+                    <a href="{{ path('create_enterprise') }}"
+                       class="btn btn-primary m-btn m-btn--custom m-btn--icon m-btn--air">
+												<span>
+													<i class="m-menu__link-icon flaticon-presentation"></i>
+													<span>Nouvelle Entreprise</span>
+												</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="m-portlet__body">
+
+        <!--begin: Datatable -->
+        <table class="table table-striped- table-bordered table-hover table-checkable" id="m_table_1">
+            <thead>
+
+            <tr>
+                <th>Raison Sociale</th>
+                <th>Département</th>
+                <th>Région</th>
+                <th>Syndicat de rattachement</th>
+                <th>Secteur d'activité</th>
+                <th>Statut adhésion année en cours</th>
+
+                <th>Actions</th>
+
+                {# "Entreprise" hidden fields #}
+                <th class="hidden">Statut</th>
+                <th class="hidden">Code Siren</th>
+                <th class="hidden">Code APE</th>
+                <th class="hidden">N. Matricule</th>
+                <th class="hidden">Numeros EDE Negoce</th>
+                <th class="hidden">Numeros EDE Centre rassemblement</th>
+                <th class="hidden">Numeros EDE Elevage</th>
+                <th class="hidden">Identifiant Comptabilite</th>
+                <th class="hidden">N° TVA Intracommunautaire.</th>
+                <th class="hidden">Souhaite adhérer.</th>
+                <th class="hidden">Souhaite figurer Ann/adhérent</th>
+                <th class="hidden">Souhaite figurer Ann/internet</th>
+
+                {# --- "Etablissement" hidden fields --- #}
+                {# Etablissement Siege Social #}
+                <th class="hidden"><span style="color: #53a759">Etablissement</span>
+                    <span style="color: #a75065"> Siège Social</span>
+                </th>
+                <th class="hidden"><span style="color: #53a759">Etablissement nom Département</span>
+                    <span style="color: #a75065"> Siège Social</span>
+                </th>
+                <th class="hidden"><span style="color: #53a759">Etablissement nom Région</span>
+                    <span style="color: #a75065"> Siège Social</span>
+                </th>
+                <th class="hidden"><span style="color: #53a759">Etablissement Code Siret</span>
+                    <span style="color: #a75065"> Siège Social</span>
+                </th>
+
+                {# etablissement 2 #}
+                <th class="hidden"><span style="color: #53a759">Etablissement 2</span></th>
+                <th class="hidden"><span style="color: #53a759">Etablissement 2 nom Département</span></th>
+                <th class="hidden"><span style="color: #53a759">Etablissement 2 nom Région</span></th>
+                <th class="hidden"><span style="color: #53a759">Etablissement 2 Code Siret</span></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in advancedSearchResults %}
+                <tr>
+                    <td>{#Raison Sociale#}
+                        <a href="{{ path('show_entreprise', {'id': entity.id }) }}">
+                            {{ entity.raisonSocial|upper }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if entity.departement %}
+                            {{ entity.departement.nom }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if entity.departement %}
+                            {% for region in entity.departement.regions %}
+                                {{ region.nom }}
+                            {% endfor %}
+                        {% endif %}
+                    <td>
+                        {% if entity.syndicat %}
+                            {{ entity.syndicat.nom }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if entity.activity %}
+                            {% for activite in entity.activity %}
+                                {{ activite.nom|capitalize }} /
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>{# current year's contribution status #}
+                        {% if entity.cotisations %}
+                            {% for cotisation in entity.cotisations %}
+                                {% if cotisation.anneeCotisation == "now"|date("Y") %}
+                                    {{ cotisation.cotisationStatut.nom }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+
+                    {# MENU ACTIONS #}
+                    <td>
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item">
+                                <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
+                                     m-dropdown-toggle="hover" aria-expanded="true">
+                                    <a href="#"
+                                       class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+                                        <i class="la la-ellipsis-h m--font-brand"></i>
+                                    </a>
+                                    <div class="m-dropdown__wrapper">
+                                        <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                        <div class="m-dropdown__inner">
+                                            <div class="m-dropdown__body">
+                                                <div class="m-dropdown__content">
+                                                    <ul class="m-nav">
+                                                        <li class="m-nav__item">
+                                                            <a href="{{ path('show_entreprise', {'id': entity.id }) }}"
+                                                               class="m-nav__link">
+                                                                <i class="m-nav__link-icon flaticon-visible"></i>
+                                                                <span class="m-nav__link-text">Consulter</span>
+                                                            </a>
+                                                        </li>
+
+                                                        {% if is_granted('ROLE_ADMIN') %}
+                                                            <li class="m-nav__item">
+                                                                <a href="{{ path('edit_entreprise', {'id': entity.id }) }}"
+                                                                   class="m-nav__link">
+                                                                    <i class="m-nav__link-icon flaticon-edit-1"></i>
+                                                                    <span class="m-nav__link-text">Editer</span>
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+
+                                                        <li class="m-nav__separator m-nav__separator--fit m--hide">
+                                                        </li>
+                                                        <li class="m-nav__item m--hide">
+                                                            <a href="#"
+                                                               class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Submit</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </td>
+
+                    {# "Entreprise" hidden fields #}
+                    <td class="hidden">{#Statut#}
+                        {% if entity.isTransporter %}
+                            Transp.
+                        {% else %}
+                            Negoce
+                        {% endif %}
+                    </td>
+                    <td class="hidden">{#Code Siren#}
+                        {{ entity.codeSiren|upper }}
+                    </td>
+                    <td class="hidden">{#Code APE#}
+                        {{ entity.codeApe|upper }}
+                    </td>
+                    <td class="hidden">{#N° Matr.#}
+                        {{ entity.ancienIdentifiant|upper }}
+                    </td>
+                    <td class="hidden">{#N° EDE negoce #}
+                        {{ entity.numEdeNegoce|upper }}
+                    </td>
+                    <td class="hidden">{#N° EDE centre de rassemeblement #}
+                        {{ entity.numEdeCentre|upper }}
+                    </td>
+                    <td class="hidden">{#N° EDE elevage #}
+                        {{ entity.numEdeElevage|upper }}
+                    </td>
+                    <td class="hidden">{#Id compta.#}
+                        {{ entity.identifiantCompta|upper }}
+                    </td>
+                    <td class="hidden">{#Intracom.#}
+                        {{ entity.numTvaIntracom|upper }}
+                    </td>
+                    <td class="hidden">{#Veux adh.#}
+                        {% if entity.souhaiteAdherer %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                    <td class="hidden">{#Ann/adh.#}
+                        {% if entity.figurerAnnuaireAdherents %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+                    <td class="hidden">{#Ann/int.#}
+                        {% if entity.figurerAnnuaireInternet %}
+                            Oui
+                        {% else %}
+                            Non
+                        {% endif %}
+                    </td>
+
+                    {# ETABLISSEMENTs #}
+                    <td class="hidden"> {# ETABLISSEMENT SIEGE SOCIAL #}
+                        {% if etablissements[entity.id]['siege'] is defined %}
+                            {{ etablissements[entity.id]['siege']['nom']|upper }}
+                        {% endif %}
+                    </td>
+
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['siege']['departementNom'] is defined %}
+                            {{ etablissements[entity.id]['siege']['departementNom'] }}
+                        {% endif %}
+                    </td>
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['siege']['regionNom'] is defined %}
+                            {{ etablissements[entity.id]['siege']['regionNom'] }}
+                        {% endif %}
+                    </td>
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['siege'] is defined %}
+                            {{ etablissements[entity.id]['siege']['codeSiren'] }}
+                        {% endif %}
+                    </td> {# <--end SIEGE SOCIAL #}
+
+                    <td class="hidden"> {# ETABLISSEMENT 2 #}
+                        {% if etablissements[entity.id]['autres'] is defined %}
+                            {{ etablissements[entity.id]['autres']['nom']|upper }}
+                        {% endif %}
+                    </td>
+
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['autres']['departementNom'] is defined %}
+                            {{ etablissements[entity.id]['autres']['departementNom'] }}
+                        {% endif %}
+                    </td>
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['autres']['regionNom'] is defined %}
+                            {{ etablissements[entity.id]['autres']['regionNom'] }}
+                        {% endif %}
+                    </td>
+                    <td class="hidden">
+                        {% if etablissements[entity.id]['autres'] is defined %}
+                            {{ etablissements[entity.id]['autres']['codeSiren'] }}
+                        {% endif %}
+                    </td> {# <--end  ETABLISSEMENT 2 #}
+
+                    {# <--end  ETABLISSEMENTs #}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

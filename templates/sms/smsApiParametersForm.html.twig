@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} SMS paramètres
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+        {{ form_start(smsParamsForm, {
+            attr: {'class': 'm-form m-form--fit m-form--label-align-right', 'id': 'smsParamsForm'}}) }}
+
+        <div class="m-portlet__body">
+            <fieldset class="col-lg-12 ffcb-selector-border">
+
+                <legend class="col-lg-6">{{ 'les paramètres du fournisseur de service SMS'|upper }}</legend>
+
+                {# provider name | optional #}
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Nom du fournisseur :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(smsParamsForm.providerName, {
+                            attr: {'class': 'form-control'}}) }}
+                        <span class="m-form__help" style="color: #696969">Ce champ est uniquement informatif / L'application est configurée pour le fournisseur OVH.</span>
+                    </div>
+                </div>
+
+                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x" style="border-top: 1px dashed #ff9bc3"></div>
+
+                <h5 class="text-center">La moindre inexactitude des paramètres pourrait compromettre le bon fonctionnement du service !</h5>
+
+                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x" style="border-top: 1px dashed #ff9bc3"></div>
+                {# APPLICATION KEY #}
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Application Key :<span
+                                class="red">*</span></label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red" style="padding: 20px;">{{ form_errors(smsParamsForm.applicationKey) }}</span>
+                        {{ form_widget(smsParamsForm.applicationKey, {
+                            attr: {'class': 'form-control'}}) }}
+                        {#<span class="m-form__help" style="color: #ff9bc3">Respectez la casse <span style="color: #696969">(minuscules/MAJUSCULES)</span></span>#}
+                    </div>
+                </div>
+
+                {# APPLICATION SECRET #}
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Application Secret :<span
+                                class="red">*</span></label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red"
+                              style="padding: 20px;">{{ form_errors(smsParamsForm.applicationSecret) }}</span>
+                        {{ form_widget(smsParamsForm.applicationSecret, {
+                            attr: {'class': 'form-control'}}) }}
+                        {#<span class="m-form__help" style="color: #ff9bc3">Respectez la casse <span style="color: #696969">(minuscules/MAJUSCULES)</span></span>#}
+                    </div>
+                </div>
+
+                {# CONSUMER KEY #}
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Consumer Key :<span
+                                class="red">*</span>
+                    </label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red"
+                              style="padding: 20px;">{{ form_errors(smsParamsForm.consumerKey) }}</span>
+                        {{ form_widget(smsParamsForm.consumerKey, {
+                            attr: {'class': 'form-control'}}) }}
+                        {#<span class="m-form__help" style="color: #ff9bc3">Respectez la casse <span style="color: #696969">(minuscules/MAJUSCULES)</span></span>#}
+                    </div>
+                </div>
+
+                {# END POINT #}
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">End point :<span
+                                class="red">*</span>
+                    </label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red"
+                              style="padding: 20px;">{{ form_errors(smsParamsForm.endPoint) }}</span>
+                        {{ form_widget(smsParamsForm.endPoint, {
+                            attr: {'class': 'form-control'}}) }}
+                        {#<span class="m-form__help" style="color: #ff9bc3">Respectez la casse <span style="color: #696969">(minuscules/MAJUSCULES)</span></span>#}
+                    </div>
+                </div>
+
+                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+            </fieldset>
+
+
+            {# SUBMIT #}
+            <div style="padding: 30px">
+                <button type="submit" class="btn btn-primary offset-1">Soumettre</button>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </div>
+        {{ form_widget(smsParamsForm._token) }}
+        {{ form_end(smsParamsForm, {'render_rest': false }) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}

@@ -1,0 +1,236 @@
+#m_login_signin_submit {
+    background-color: #313e47;
+    border: 1px solid #77a187;
+}
+
+#m_header {
+    height: 90px
+}
+
+.jumbotron {
+    padding: 1rem 2rem;
+}
+.jumbotron h5 {
+    padding: 0;
+    margin: 0;
+}
+
+.video_bcg_section {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+.video_bcg_section h1 {
+    text-align: center;
+    font-size: 6rem;
+    z-index: 1;
+    color: #ffffff;
+    font-family: 'Poiret One', cursive;
+}
+.video_bcg_section h5 {
+    text-align: center;
+    font-size: 2rem;
+    z-index: 1;
+    color: #ffffff;
+    font-family: 'Poiret One', cursive;
+    /*background-color: rgba(49, 62, 71, 0.5);*/
+}
+.video_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.color-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #313e47;
+    width: 100%;
+    height: 100vh;
+    opacity: 0.7;
+}
+
+.ffcb-bcg-color {
+    background-color: #313e47;
+    color: #ffffff;
+}
+
+#contact-fields-list {
+    padding: 10px;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#main_container
+.contacts {
+    padding: 10px;
+}
+
+#ffcb-advanced-search-title {
+    padding: 20px;
+    color: #929ea1;
+}
+
+
+#ffcb-advanced-search-form {
+    -webkit-box-shadow: 0 18px 55px 12px rgba(0, 0, 158, 0.1);
+    -moz-box-shadow: 0 18px 55px 12px rgba(0, 0, 158, 0.1);
+    box-shadow: 0 18px 55px 12px rgba(0, 0, 158, 0.1);
+    padding: 0 20px;
+    border-radius: 15px;
+}
+
+            /*-------FORMS---------*/
+
+/*#entrepriseForm input, #entrepriseForm textarea{
+    margin: 10px 0;
+}*/
+#ide-compta-maker {
+    border: 1px dotted #495bcf;
+    height: 40px;
+    border-radius: 5px;
+}
+
+.ffcb-form-textarea {
+    min-height: 100px;
+    border: 1px dotted #2a4880;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.ffcb-form-error-border-color {
+    border: 1px solid #ff9886;
+}
+.red {
+    color: #ff0d00;
+}
+.ffcb-table-border {
+    border: 1px solid #313e47;
+}
+.ffcb-input-dotted-border{
+    border-radius: 0;
+    border: 1px dotted #495bcf;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+#ffcb_info_generales .form-group {
+    /*padding: 0;*/
+}
+#ffcb_info_generales input {
+    margin: 10px 0;
+}
+
+.ffcb-selector-border {
+    border: 1px dotted grey;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    /*margin-top: 20px;*/
+    padding: 20px;
+}
+    /*consult*/
+.m-section {
+    margin: 0;
+}
+.ffcb-block {
+    padding: 25px 0;
+    border-bottom: 1px dotted #c9c9c9;
+}
+.m-form .m-form__group {
+    padding: 0;
+}
+form#contactForm input{
+    margin: 3px 0;
+}
+form#contactForm .bureau input{
+    margin: 0;
+}
+.row {
+    margin-right: 0;
+    margin-left:  0;
+}
+.m-portlet .m-portlet__body{
+    padding: 0;
+}
+#adhesion, #raison_non_adhesion {
+    padding: 20px;
+}
+#ffcb_etablissement_form input{
+    margin: 3px 0;
+}
+#ffcb-arrow, #ffcb-arrow-research {
+    left: auto;
+    right: 55px;
+    color: #ffffff;
+}
+#ffcb-sub-menu {
+    width: 174px;
+    padding: 10px 20px;
+    position: absolute;
+    background-color: #ffffff;
+    right: 263px;
+    top: 91px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.1);
+}
+#ffcb-admin-menu i {
+    position: absolute;
+    right: 20px;
+    color: #313e47;
+}
+#ffcb-admin-menu span{
+    color: #313e47;
+}
+#ffcb-admin-menu li {
+    padding: 5px 0;
+}
+.switch-display-off {
+    display: none;
+}
+.switch-display-on {
+    display: block;
+}
+#contactResponsable li div,
+#contactResponsableList li div{
+    border: 1px solid #d3d3d3;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 2px;
+    background-color: #ffffff;
+}
+.test-test{
+    color: #f2f3f8;
+}
+
+/* INDEX PAGE */
+#carte_france_container {
+    position: relative;
+    background-image: url("../../../images/france_carte.png");
+    background-size: cover;
+    height: 545px;
+    width: 680px;
+}
+#carte_france_container > span {
+    font-size: 20px;
+}
+.select-width{
+    width: 500px;
+}
+
+#messengerForm input/*:not(.select2-search__field) */{
+    border: 0;
+}
+.hidden {
+    display: none;
+}

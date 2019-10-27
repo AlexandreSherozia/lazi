@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"
+      class="wf-poppins-n3-active wf-poppins-n4-active wf-poppins-n5-active wf-poppins-n6-active wf-poppins-n7-active wf-roboto-n4-active wf-roboto-n5-active wf-roboto-n6-active wf-roboto-n7-active wf-roboto-n3-active wf-active">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}LAZI - {% endblock %}</title>
+    <meta name="description" content="Latest updates and statistic charts">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {"families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"]},
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <!--begin::Global Theme Styles -->
+    <link href="{{ asset('assets/vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+
+    <!--RTL version:<link href="assets/demo/default/base/style.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
+    <link href="{{ asset('assets/vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet"
+          type="text/css"/>
+    <!--RTL version:<link href="assets/vendors/custom/fullcalendar/fullcalendar.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
+    <link rel="shortcut icon" href="assets/demo/default/media/img/logo/ffcb.ico"/>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/app/css/over.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="m-page--wide m-header--fixed m-header--fixed-mobile m-footer--push m-aside--offcanvas-default m-header--minimize-off">
+<div class="m-grid m-grid--hor m-grid--root m-page">
+    {% block body %}
+
+        {#-------HEADER--------#}
+        {% include '_includes/_header.html.twig' %}
+
+        {# ASIDE MENU #}
+        {#{% include '_includes/_asideMenu.html.twig' %}#}
+
+        {#-------FLASHBAG MESSAGES--------#}
+        <div class="flashbag" style="margin-top: 20px;">
+            {% for type, flashes in app.session.flashBag.all %}
+                {% for message in flashes %}
+                    {% if type == 'success' %}
+                        <div class="alert alert-success text-center" style="font-size: 2em">
+                            {{ message }}
+                        </div>
+
+                    {% elseif type == 'error' %}
+                        <div class="alert alert-danger text-center" style="font-size: 2em">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            {% endfor %}
+
+            {% for message in app.session.flashBag('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+        {#---------MAIN CONTENT--------#}
+        {% if 'app_homepage' == app.request.attributes.get('_route') %}
+            {% set height = '317px' %}
+        {% else %}
+            {% set height = '0' %}
+        {% endif %}
+        <div id="main_container" style="margin-top: {{ height }}">
+            {% block content '' %}
+        </div>
+
+        {#-------FOOTER--------#}
+        {% include '_includes/_footer.html.twig' %}
+
+    {% endblock %}
+</div>
+{% block javascripts %}
+    <script src="{{ asset('assets/vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/base/scripts.bundle.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/adminSubmenu.js') }}" type="text/javascript"></script>
+
+    {#In different environments the "appUrl" variable dynamically provides the right URI #}
+    <script>
+        window.globalVars = {
+            appUrl: "{{ app.request.getBaseURL()|escape('js') }}",
+        }
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            let video_bckg = $('.video_bcg_section');
+            let html = $('html');
+
+            /*mozzila*/
+            /*html.bind('DOMMouseScroll', function (e) {
+                if (e.originalEvent.mousewheel > 20) {
+                    alert("yooo");
+                }
+            });*/
+            /*for google/safari, IE, opera*/
+            html.bind('mousewheel', function (e) {
+                if (e.originalEvent.wheelDelta < 0) {
+
+                    let container_pos = html.scrollTop();
+                    if (container_pos > 300) {
+                        video_bckg.fadeOut('slow');
+                    }
+                } else {
+                    let container_pos = html.scrollTop();
+                    if (container_pos < 300) {
+                        video_bckg.fadeIn('slow');
+                    }
+                }
+                return false;
+            })
+        });
+
+
+    </script>
+{% endblock %}
+</body>
+</html>

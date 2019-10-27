@@ -1,0 +1,174 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Recherche avancée {% endblock %}
+{% block stylesheets %}
+    <!--begin::Global Theme Styles -->
+    <link href="{{ asset('assets/vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <!--RTL version:<link href="../../../assets/demo/default/base/style.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
+
+    <!--end::Global Theme Styles -->
+
+    <!--begin::Page Vendors Styles -->
+    <link href="{{ asset('assets/demo/default/base/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% import _self as formMacros %}
+{% macro printCriteriaFields(criteria) %}
+    <li class="row" style="margin: 10px;">
+        <div style="margin:0 5px; width: 20%">{{ form_widget(criteria.entity, {
+                attr: {
+                    'data-corresponding-field-url': path('corresponding-field-select'),
+                    class: 'form-control',
+                    style: 'width: 200px',
+                }
+            }) }}
+        </div>
+
+        <div style="margin:0 5px; width: 35%">{{ form_widget(criteria.field, {
+                attr: {
+                    class: 'form-control'
+                }
+            }) }}
+        </div>
+
+        <div style="margin:0 15px; width: 28%" class="termsCollectionHolder">{{ form_widget(criteria.term, {
+                attr: {
+                    class: 'form-control'
+                }
+            }) }}
+        </div>
+    </li>
+{% endmacro %}
+
+{% block content %}
+    {#{{ dump(queryString) }}#}
+    <!--RTL version:<link href="../../../assets/vendors/base/vendors.bundle.rtl.css" rel="stylesheet" type="text/css" />-->
+    <div class="m-content">
+        <div class="container-fluid" style="width: 70%">
+            <div class="m-login__logo text-center">
+                <a href="javascript:">
+                    <img src="{{ asset('ffcb_logo/ffcb_logo_65x65.jpg') }}">
+                </a>
+            </div>
+
+            <div class="m-login__head text-center" id="ffcb-advanced-search-title">
+                <h3 class="m-login__title">Recherche avancée <span id="repository">{{ entity|upper }}</span></h3>
+            </div>
+            {{ form_start(advancedSearchForm, {attr: {'id': 'advancedSearchForm'}}) }}
+
+            <div class="m-portlet" id="contact-fields-list" style="margin-top: 20px; padding: 20px;">
+
+                <div class="row" style="margin: 10px">
+                    <div style="padding:0 5px; width: 20%">
+                        <h6>Entite</h6>
+                    </div>
+                    <div style="margin:0 10px; width: 35%">
+                        <h6>Champs correspondants</h6>
+                    </div>
+                    <div style="margin:0 18px; width: 28%">
+                        <h6>Valeur</h6>
+                    </div>
+
+                </div>
+
+                {#<hr>#}
+                <ul class="advancedSearch"
+                    data-prototype="{{ formMacros.printCriteriaFields(advancedSearchForm.searchCriteria.vars.prototype)|e('html_attr') }}">
+                    {#iterate over each existing tag and render its only field: name#}
+                    {% for criteria in advancedSearchForm.searchCriteria %}
+                        {#! <li></li> USED BY JAVASCRIPT for inserting Contact collections (<li></li> are actually in Macros, which are used for a normal visualization of Collections) #}
+
+                        {{ formMacros.printCriteriaFields(criteria) }}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-2" style="padding: 30px">
+                    <button type="submit" class="btn btn-primary offset-1">Rechercher</button>
+                </div>
+
+                {% if entity == 'contact' %}
+                    <div style="padding: 10px" class="col-lg-10">
+                        <label for="for_email" style="padding: 30px">Pour l'envoi d'Email
+                            <input type="checkbox" title="for_email" name="for_email" id="for_email" class="sendingTypeSelector">
+                        </label>
+                        <label for="for_sms" style="padding: 30px">Pour l'envoi de SMS
+                            <input type="checkbox" title="for_sms" name="for_sms" id="for_sms" class="sendingTypeSelector">
+                        </label>
+                    </div>
+                {% endif %}
+
+
+            </div>
+            {{ form_end(advancedSearchForm) }}
+
+            {% if entity == 'entreprise' %}
+                {% include '_includes/_adv_search_entreprise_results.html.twig' %}
+            {% elseif entity == 'contact' %}
+                {% include '_includes/_adv_search_contact_results.html.twig' %}
+            {% elseif entity == 'syndicat' %}
+                {% include '_includes/_adv_search_syndicats_results.html.twig' %}
+            {% elseif entity == 'cotisation' %}
+                {% include '_includes/_adv_search_cotisation_results.html.twig' %}
+            {% endif %}
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/app/js/criteriasCollectionAdding.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/contactsCheckboxesForEmailAndSms.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('assets/vendors/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
+    <script>
+        $("#extra-fields-delete").on("click", function (e) {
+            // alert('yooo');
+            let $fields = $("td.hidden");
+            $fields.remove();
+            $fields.hide();
+        });
+    </script>
+    {#<script src="{{ asset('assets/demo/default/custom/crud/datatables/extensions/buttons.js') }}" type="text/javascript"></script>#}
+    <script type="text/javascript">
+        var DatatablesExtensionButtons = {
+            init: function () {
+                var t;
+                /* Entreprise/Contact/Syndicat printing template */
+                $("#m_table_1").DataTable({
+                    responsive: !0,
+                    dom: "<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>\n\t\t\t<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+                    buttons: ["print", "excelHtml5", "csvHtml5"],/*, "pdfHtml5", "copyHtml5",*//* PDF print disabled for Entreprise, Contact and Syndicat */
+
+                    /* Cotisation printing template */
+                }), t = $("#m_table_2").DataTable({
+                    responsive: !0,
+                    buttons: ["print", "copyHtml5", "excelHtml5", "csvHtml5", "pdfHtml5"],
+
+                }), $("#export_print").on("click", function (e) {
+                    e.preventDefault(), t.button(0).trigger()
+                }), $("#export_excel").on("click", function (e) {
+                    e.preventDefault(), t.button(2).trigger()
+                }), $("#export_csv").on("click", function (e) {
+                    e.preventDefault(), t.button(3).trigger()
+                }), $("#export_pdf").on("click", function (e) {
+                    e.preventDefault(), t.button(4).trigger()
+                })
+            }
+        };
+        jQuery(document).ready(function () {
+            DatatablesExtensionButtons.init()
+        });
+    </script>
+
+
+
+    {#<script src="{{ asset('assets/demo/default/custom/crud/datatables/data-sources/ajax-server-side.js') }}" type="text/javascript"></script>#}
+{% endblock %}
+

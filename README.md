@@ -1,2 +1,2 @@
 # lazi
-Georgian Cultural Center
+georgian cultural center

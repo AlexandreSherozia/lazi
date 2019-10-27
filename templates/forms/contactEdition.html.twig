@@ -1,0 +1,380 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Compléter Contact{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="m-login__logo text-center">
+        <a href="javascript:">
+            <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+        </a>
+    </div>
+
+    {# MACROS #}
+    {% import _self as contactMacros %}
+    {% macro printSyndicatRows(syndicatContact) %}
+        {% if form_errors(syndicatContact.syndicat) %}
+            <span class="m-form__help" style="color: #ff0d00">{{ form_errors( syndicatContact.syndicat ) }}</span>
+        {% endif %}
+        {% if form_errors(syndicatContact.roles) %}
+            <span class="m-form__help" style="color: #ff0d00">{{ form_errors( syndicatContact.roles ) }}</span>
+        {% endif %}
+        <li class="row" style="margin: 10px 0">
+
+            <div class="col-lg-6" style="padding: 0 5px">
+                {{ form_widget(syndicatContact.syndicat, { 'attr': { 'class': 'form-control select2' } }) }}
+            </div>
+
+            <div class="col-lg-5" style="padding: 0 5px">
+                {{ form_widget(syndicatContact.roles, { 'attr': { 'class': 'form-control select2' } })  }}
+            </div>
+        </li>
+    {% endmacro %}
+
+    {% macro printCommissionRows(commissionsContact) %}
+        <li class="row" style="margin: 10px 0">
+            <div class="col-lg-6" style="padding: 0 5px">
+                {{ form_widget(commissionsContact.commission, { 'attr': { 'class': 'form-control select2', 'style': 'padding: 5px', } }) }}
+            </div>
+            <div class="col-lg-5" style="padding: 0 5px">
+                {{ form_widget(commissionsContact.commissionRoles, { 'attr': { 'class': 'form-control select2', 'style': 'padding: 5px' } }) }}
+            </div>
+        </li>
+    {% endmacro %}
+    {% macro printConseilAdminRows(conseilAdministration) %}
+        {#<li class="row">#}
+            {{ form_widget(conseilAdministration.conseilAdministration, { 'attr': { 'class': 'form-control select2', 'style': 'padding: 5px', } }) }}
+            {#</div>#}
+        {#</li>#}
+    {% endmacro %}
+
+    {{ form_start(contactForm, {'attr': {'class': 'm-form m-form--fit m-form--label-align-right', 'id': 'contactForm'}}) }}
+
+    {# BREADCRUMB #}
+    <div class="ffcb-file-ariane" style="padding: 15px 20px">
+        <span class="font-weight-bold"> > </span>
+
+        {#<a href="{{ path('show_contact', {'entreprise': entreprise, 'id': contact.id }) }}">{{ contact.prenom }} {{ contact.nom }}</a>#}
+
+        {#{% if entreprise != "inconnue" %}
+            L'entreprise {{ entreprise|upper }}<span class="font-weight-bold"> > </span>
+        {% endif %}
+        {% if action == "edition" %}
+            <a href="{{ path('show_contact', {'entreprise': entreprise, 'id': contact.id }) }}">{{ contactData|upper }}</a> <span class="font-weight-bold"> > </span>
+        {% endif %}#}
+        {% if contact is defined and contact.prenom is not null and contact.nom is not null %}
+            <span style="color: #249dfe">{{ contact.prenom }} {{ contact.nom }}</span>
+        {% else %}
+            <span>Nouveau contact</span>
+        {% endif %}
+        <span class="font-weight-bold"> > </span>
+        <span style="color: #249dfe">{{ action }}</span>
+    </div>
+
+
+    <div class="m-portlet__body">
+        <fieldset class="col-lg-12 ffcb-selector-border">
+            {% if action == 'creation' %}
+                <legend class="col-lg-5">{{ 'création nouveau contact' |upper }}</legend>
+            {% else %}
+                {% set entrepriseName = entreprise is defined ? entreprise : 'inconnue' %}
+                <legend class="col-lg-7">{{ 'Entreprise '~entrepriseName|upper }} : édition contact </legend>
+            {% endif %}
+
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Civilité :</label>
+                <div class="offset-1 col-lg-2">
+
+                    {{ form_label(contactForm.civilite.children[0]) }}
+                    {{ form_widget(contactForm.civilite.children[0], {'attr': {'class': ''}}) }}
+
+                    {{ form_label(contactForm.civilite.children[1]) }}
+                    {{ form_widget(contactForm.civilite.children[1], {'attr': {'class': ''}}) }}
+
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Nom du Contact :</label>
+                <div class="offset-1 col-lg-8">
+                    {% if form_errors(contactForm.nom) %}
+                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( contactForm.nom ) }}</span>
+                    {% endif %}
+                    {{ form_widget(contactForm.nom, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Prénom :</label>
+                <div class="offset-1 col-lg-8">
+                    {% if form_errors(contactForm.prenom) %}
+                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( contactForm.prenom ) }}</span>
+                    {% endif %}
+                    {{ form_widget(contactForm.prenom, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">N° portable :</label>
+                <div class="offset-1 col-lg-8">
+                    {% if form_errors(contactForm.telPortable) %}
+                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( contactForm.telPortable ) }}</span>
+                    {% endif %}
+                    {{ form_widget(contactForm.telPortable) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">N° portable 2:</label>
+                <div class="offset-1 col-lg-8">
+                    {% if form_errors(contactForm.telPortable2) %}
+                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( contactForm.telPortable2 ) }}</span>
+                    {% endif %}
+                    {{ form_widget(contactForm.telPortable2) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Téléphone bureau :</label>
+                <div class="offset-1 col-lg-8">
+                    {{ form_widget(contactForm.telBureau, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Email :</label>
+                <div class="offset-1 col-lg-8">
+                    {% if form_errors(contactForm.emailContact) %}
+                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( contactForm.emailContact ) }}</span>
+                    {% endif %}
+                    {{ form_widget(contactForm.emailContact, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Date de naissance :</label>
+                <div class="offset-1 col-lg-8">
+                    {{ form_widget(contactForm.dateNaissance, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+
+        </fieldset>
+
+
+{#----------------------------ADRESSE-------------------------------#}
+        <fieldset class="col-lg-12 ffcb-selector-border">
+            <legend class="col-lg-2">{{ 'Adresse'|upper }}</legend>
+
+            {#<div class="form-group m-form__group row">
+                <div class="col-10 ml-auto">
+                    <h3 class="m-form__section">2. Adresse</h3>
+                </div>
+            </div>#}
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Adresse :</label>
+                <div class="offset-1 col-8">
+                    {{ form_widget(contactForm.adresse, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Adresse suite :</label>
+                <div class="offset-1 col-8">
+                    {{ form_widget(contactForm.adresse2, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Ville :</label>
+                <div class="offset-1 col-8">
+                    {{ form_widget(contactForm.ville, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+            <div class="form-group m-form__group row">
+                <label for="example-text-input" class="col-3 col-form-label">Code postal :</label>
+                <div class="offset-1 col-8">
+                    {{ form_widget(contactForm.codePostal, {'attr': {'class': 'form-control m-input'}}) }}
+                </div>
+            </div>
+        </fieldset>
+
+{#----------------------------INFOS GENERALES-------------------------------#}
+        {#<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>#}
+        <fieldset class="col-lg-12 ffcb-selector-border">
+            <legend class="col-lg-2">{{ 'relations'|upper }}</legend>
+
+            {#--------------body-------------#}
+
+            <div class="form-group m-form__group row">
+                <div class="col-lg-12">
+                    <div class="form-group m-form__group row">
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6" style="padding: 5px">
+                                    <span class="font-weight-bold">Nom Syndicat :</span>
+                                </div>
+                                <div class="col-lg-5" style="padding: 5px">
+                                    <span class="font-weight-bold">Rôle :</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+
+                             {#"ul.syndicatContact" intercepté par javascript#}
+                            <ul class="syndicatContact" data-prototype="{{ contactMacros.printSyndicatRows(contactForm.syndicatContacts.vars.prototype)|e('html_attr') }}">
+                                {% for syndicatContact in contactForm.syndicatContacts %}
+                                    {{ contactMacros.printSyndicatRows(syndicatContact) }}
+                                    <hr>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group m-form__group row">
+                <div class="col-lg-12">
+
+                    <div class="form-group m-form__group row">
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6" style="padding: 5px">
+                                    <span class="font-weight-bold">Nom Commission :</span>
+                                </div>
+                                <div class="col-lg-5" style="padding: 5px">
+                                    <span class="font-weight-bold">Rôle :</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            {# "ul.commission" intercepté par javascript #}
+                            <ul class="commission" data-prototype="{{ contactMacros.printCommissionRows(contactForm.commissionsContacts.vars.prototype)|e('html_attr') }}">
+                                {% for commissionsContact in contactForm.commissionsContacts %}
+                                    {{ contactMacros.printCommissionRows(commissionsContact) }}
+                                    <hr>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+
+
+
+            <div class="form-group m-form__group row">
+                <div class="col-lg-12">
+                    <div class="form-group m-form__group row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-4" style="padding: 5px">
+                                    <span class="font-weight-bold">Rôle dans le Conseil d'administration:</span>
+                                </div>
+                                <div class="col-lg-8">
+                                    {# "ul.conseilAdministration" intercepté par javascript #}
+                                    <ul class="conseilAdministration" data-prototype="{{ contactMacros.printConseilAdminRows(contactForm.contactConseilAdministrations.vars.prototype)|e('html_attr') }}">
+                                        {% for i,conseilAdministration in contactForm.contactConseilAdministrations %}
+                                            <li class="row" style="margin: 10px 0">
+                                                {% if contact.contactConseilAdministrations[i].isActive %}
+                                                    <span class="font-weight-bold offset-2 col-lg-1" style="color: #00ff0f">Actif</span>
+                                                {% else %}
+                                                    <span class="font-weight-bold offset-2 col-lg-1" style="color: #ff4f3b"> Inactif</span>
+                                                {% endif %}
+                                                <hr>
+                                                <span class="col-lg-8">{{ contactMacros.printConseilAdminRows(conseilAdministration) }}</span>
+
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <div class="form-group m-form__group row">
+                <div class="col-lg-12">
+                    <div class="form-group m-form__group row">
+                        <label for="example-text-input" class="col-lg-5 col-form-label">{{ 'créez de nouveaux repères'|upper }} :</label>
+                        <div class="offset-1 col-lg-6">
+                            <ul class="reperes" data-prototype="{{ form_widget(contactForm.repere.vars.prototype)|e('html_attr') }}">
+                                {% for repere in contactForm.repere %}
+                                    <li class="row">
+                                        <div style="padding: 5px">{{ form_widget(repere.nom, {
+                                                'attr': {
+                                                    'class': 'form-control col-lg-10',
+                                                    'style': 'width: 30rem; border: 1px solid #c9c9c9;'
+                                                }
+                                            })
+                                            }}
+                                        </div>
+
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group m-form__group row">
+                <div class="col-lg-12">
+                    <div class="form-group m-form__group row">
+
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-6" style="padding: 5px">
+                                    <span class="font-weight-bold">Assignez les repères déjà existants:</span>
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form_widget(contactForm.reperesExistants, {
+                                        'attr': {
+                                            'class': 'form-control col-lg-12 select2'
+                                        }
+                                    }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+
+        {# SUBMIT #}
+        <div style="padding: 30px">
+            <button type="submit" class="btn btn-primary offset-1">Soumettre</button>
+            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+        </div>
+    </div>
+            {{ form_widget(contactForm._token) }}
+    {{ form_end(contactForm, {'render_rest': false }) }}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/app/js/repereCollectionsAdding.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/bureauCollectionAdding.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/commissionContactCollection.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/syndicatContactCollection.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/input-mask.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/summernote.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/select2.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $(".select2").select2(
+                {placeholder: "*"}
+            );
+        });
+    </script>
+{% endblock %}
+

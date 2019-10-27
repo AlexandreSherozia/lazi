@@ -1,0 +1,450 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}Contact
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+
+        {# BREADCRUMB #}
+
+        <div class="ffcb-file-ariane" style="padding: 15px 20px">
+            {# Here must be advancedSearch results link #}
+            {#<a href="{{ path('list_contacts') }}">Liste des contacts</a>#}
+            <span class="font-weight-bold"> > </span>
+            {{ entreprise }}
+            <span class="font-weight-bold"> > </span>
+            {% if contact.prenom is not null or contact.nom is not null %}
+                <span style="color: #249dfe">{{ contact.prenom }} {{ contact.nom }}</span>
+            {% else %}
+                <span>inconnu</span>
+            {% endif %}
+
+        </div>
+
+        <div class="m-portlet m-portlet--tab">
+
+            <div class="jumbotron" style="margin-bottom: 0;">
+                <div class="row" style="padding: 7px">
+                    <h5 class="col-lg-7">Entreprise {{ entreprise|upper }} : Fiche contact</h5>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="offset-2 col-lg-2">
+                            <a class="flaticon-edit"
+                               href="{{ path('edit_contact', { 'entreprise': entreprise,'id': contact.id }) }}">Modifier</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="m-portlet__body">
+
+                <div class="m-widget28">
+                    <div class="m-widget28__container row" style="margin: 0">
+
+                        <!--begin::left Section-->
+                        <div class="m-section col-lg-5">
+                            <div class="m-section__content">
+                                <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                    <div class="m-demo__preview m-demo__preview--badge" style="border: 0; padding: 0;">
+
+
+                                        <!-- begin::Tab Content -->
+                                        <div class="m-widget28__tab tab-content">
+                                            <div class="m-widget28__tab-container tab-pane active">
+                                                <div class="m-widget28__tab-items">
+
+                                                    <fieldset class="col-lg-12 ffcb-selector-border"
+                                                              style="padding: 20px">
+                                                        <legend class="col-lg-7">{{ 'Détails du Contact'|upper }}</legend>
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Civilité :</span>
+                                                            {% set data =  contact.civilite is not empty ? contact.civilite : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Nom :</span>
+                                                            {% set data =  contact.nom is not empty ? contact.nom : '' %}
+                                                            <span>{{ data|upper }}</span>
+                                                        </div>
+
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Prénom :</span>
+                                                            {% set data =  contact.prenom is not empty ? contact.prenom : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Téléphone bureau :</span>
+                                                            {% set data =  contact.telBureau is not empty ? contact.telBureau : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Email :</span>
+                                                            {% set data =  contact.emailContact is not empty ? contact.emailContact : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">N° portable :</span>
+                                                            {% set data =  contact.telPortable is not empty ? contact.telPortable : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">N° portable 2:</span>
+                                                            {% set data =  contact.telPortable2 is not empty ? contact.telPortable2 : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">Date de naissance :</span>
+                                                            {% set data =  contact.dateNaissance is not empty ? contact.dateNaissance : '' %}
+                                                            <span>{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Autres relations :</span>
+
+                                                            {% if contact.entreprises %}
+                                                                {% for entreprise in contact.entreprises %}
+                                                                    <span>"{{ (entreprise.raisonSocial) }}
+                                                                        " : Privilégié</span>
+                                                                {% endfor %}
+                                                            {% endif %}
+
+                                                            {% if contact.entreprises is empty %}
+
+                                                            {% endif %}
+                                                        </div>
+
+                                                    </fieldset>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end::Tab Content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!--begin::RIGHT Section-->
+                        <div class="m-section col-lg-7">
+                            <div class="m-section__content">
+                                <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                    <div class="m-demo__preview m-demo__preview--badge" style="border: 0; padding: 0;">
+
+
+                                        <!-- begin::Tab Content -->
+                                        <div class="m-widget28__tab tab-content">
+                                            <div class="m-widget28__tab-container tab-pane active">
+                                                <div class="m-widget28__tab-items">
+
+                                                    <fieldset class="col-lg-12 ffcb-selector-border"
+                                                              style="padding: 0 10px">
+                                                        <legend class="col-lg-3">{{ 'adresse'|upper }}</legend>
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>adresse :</span>
+                                                            {% set data =  contact.adresse is not empty ? contact.adresse : '' %}
+                                                            <span class="font-weight-bold">{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>adresse suite :</span>
+                                                            {% set data =  contact.adresse2 is not empty ? contact.adresse2 : '' %}
+                                                            <span class="font-weight-bold">{{ data }}</span>
+                                                        </div>
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Ville :</span>
+                                                            {% set data =  contact.ville is defined ? contact.ville : '' %}
+                                                            <span class="font-weight-bold">{{ data }}</span>
+                                                        </div>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span>Code postal :</span>
+                                                            {% set data =  contact.codePostal is defined ? contact.codePostal : '' %}
+                                                            <span class="font-weight-bold">{{ data }}</span>
+                                                        </div>
+                                                    </fieldset>
+
+                                                    <fieldset class="col-lg-12 ffcb-selector-border"
+                                                              style="padding: 0 10px 10px">
+                                                        <legend class="col-lg-4">{{ 'relations'|upper }}</legend>
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">{{ 'syndicats'|upper }}
+                                                                :</span>
+
+                                                            <div class="table table-bordered"
+                                                                 style="padding-bottom: 5px">
+                                                                <table class="table table-bordered">
+
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th><span class="font-weight-bold">Nom Syndicat :</span>
+                                                                        </th>
+                                                                        <th><span class="font-weight-bold">Rôle :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Début :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Fin :</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    {% if contact.syndicatContacts is not empty %}
+                                                                        {% for syndicatContact in contact.syndicatContacts %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {% if syndicatContact.syndicat %}
+                                                                                        {{ syndicatContact.syndicat.nom|upper }}
+                                                                                    {% endif %}
+
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    {% if syndicatContact.roles %}
+                                                                                        <ul>
+                                                                                            {% for role in syndicatContact.roles %}
+                                                                                                <li>{{ role.nom|upper }}</li>
+                                                                                            {% endfor %}
+                                                                                        </ul>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {% if syndicatContact.dateDebut %}
+                                                                                        {{ syndicatContact.dateDebut|date('m-d-Y H:i') }}
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {% if syndicatContact.dateFin %}
+                                                                                        {{ syndicatContact.dateFin|date('m-d-Y H:i') }}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #ff4f3b"> Inactif</span>
+                                                                                    {% else %}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #00ff0f">Actif</span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">{{ 'commissions'|upper }}
+                                                                :</span>
+
+                                                            <div class="table table-bordered"
+                                                                 style="padding-bottom: 5px">
+                                                                <table class="table table-bordered">
+
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th><span class="font-weight-bold">Nom Commission :</span>
+                                                                        </th>
+                                                                        <th><span class="font-weight-bold">Rôle :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Début :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Fin :</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    {% if contact.commissionsContacts is not empty %}
+                                                                        {% for commissionsContact in contact.commissionsContacts %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {% if commissionsContact.commission %}
+                                                                                        {{ commissionsContact.commission.nom|upper }}
+                                                                                    {% endif %}
+
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    {#{{ dump(commissionsContact.commissionRoles) }}#}
+                                                                                    {#{% if commissionsContact.commissionRoles %}#}
+                                                                                    <ul>
+                                                                                        {% for role in commissionsContact.commissionRoles %}
+                                                                                            <li>{{ role.nom|upper }}</li>
+                                                                                        {% endfor %}
+                                                                                    </ul>
+                                                                                    {#{% endif %}#}
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    {% if commissionsContact.dateDebut %}
+                                                                                        {{ commissionsContact.dateDebut|date }}
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {% if commissionsContact.dateFin %}
+                                                                                        {{ commissionsContact.dateFin|date('m-d-Y H:i') }}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #ff4f3b"> Inactif</span>
+                                                                                    {% else %}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #00ff0f">Actif</span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">{{ 'conseil d\'administration'|upper }}
+                                                                :</span>
+
+                                                            <div class="table table-bordered"
+                                                                 style="padding-bottom: 5px">
+                                                                <table class="table table-bordered">
+
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th><span class="font-weight-bold">Rôle dans le Conseil d'administration :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Début :</span>
+                                                                        </th>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Date Fin :</span>
+                                                                        </th>
+                                                                    </tr>
+
+
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    {% if contact.contactConseilAdministrations %}
+                                                                        {% for contactConseilAdministration in contact.contactConseilAdministrations %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {% if contactConseilAdministration.conseilAdministration %}
+                                                                                        {{ contactConseilAdministration.conseilAdministration.role|upper }}
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {% if contactConseilAdministration %}
+                                                                                        {{ contactConseilAdministration.dateDebut|date('m-d-Y H:i') }}
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {% if contactConseilAdministration.isInactif %}
+                                                                                        {{ contactConseilAdministration.dateFin|date('m-d-Y H:i') }}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #ff4f3b"> Inactif</span>
+                                                                                    {% else %}
+                                                                                        <span class="font-weight-bold"
+                                                                                              style="color: #00ff0f">Actif</span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="m-widget28__tab-item">
+                                                            <span class="font-weight-bold">{{ 'repères / tags'|upper }}
+                                                                :</span>
+
+                                                            <div class="table table-bordered"
+                                                                 style="padding-bottom: 5px">
+                                                                <table class="table table-bordered">
+
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            <span class="font-weight-bold">Nom Repère :</span>
+                                                                        </th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody>
+                                                                    {% if contact.repere or contact.reperesExistants %}
+                                                                        {% for repere in contact.repere %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{ repere.nom|upper }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                        {% for repere in contact.reperesExistants %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{ repere.nom|upper }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{ ''|upper }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endif %}
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </fieldset>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end::Tab Content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--end::INFORMATIONS GENERALES-->
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {{ parent() }} journal des actions
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+
+        <div class="m-content" style="margin-top: 40px">
+
+            <div class="m-portlet m-portlet--mobile">
+
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                {{ 'journal des actions'|upper }}
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                {# BODY DATATABLE #}
+                <div class="m-portlet__body">
+
+                    <!--begin::Section-->
+                    <div class="m-section">
+                        <div class="m-section__content">
+                            <table class="table table-striped m-table">
+                                <thead>
+                                <tr>
+                                    <th>Nom entité</th>
+                                    <th>Nom objet</th>
+                                    <th>Action</th>
+                                    <th>Auteur</th>
+                                    <th>Date et heure</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for log in history %}
+                                    <tr>
+                                        <td>{{ log.entityName }}</td>
+                                        <td>{{ log.objectName }}</td>
+                                        <td>{{ log.action }}</td>
+                                        <td>{{ log.sender }}</td>
+                                        <td>{{ log.datetime|date }}</td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <div class="navigation" style="padding-bottom: 10px">
+                                {{ knp_pagination_render(history) }}
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Section-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

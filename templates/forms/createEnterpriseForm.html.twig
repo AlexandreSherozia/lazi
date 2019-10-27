@@ -1,0 +1,1259 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}}Créer Entreprise{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="{{ asset('assets/bootstrap_toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    <div class="m-login__logo text-center">
+        <a href="javascript:">
+            <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+        </a>
+    </div>
+
+    {% import _self as formMacros %}
+    {% macro printContactsRow(contact) %}
+        <li class="row" style="padding-bottom: 10px;">
+            <div style="padding: 1px; width: 20%">{{ form_widget(contact.nom) }}</div>
+            <div style="padding: 1px; width: 20%">{{ form_widget(contact.prenom) }}</div>
+            <div style="padding: 1px; width: 28%">{{ form_widget(contact.emailContact) }}</div>
+            <div style="padding: 1px; width: 15%">{{ form_widget(contact.telPortable) }}</div>
+            <div style="padding: 1px; width: 15%">{{ form_widget(contact.dateNaissance) }}</div>
+            <div style="padding: 1px; padding: 5px; width: 2%">{{ form_widget(contact.isPrivileged) }}</div>
+        </li>
+    {% endmacro %}
+    {% macro printCommissionRow(commissionEntreprise) %}
+        <li class="row">
+            {{ form_widget(commissionEntreprise.commission, {'attr': { 'class': 'form-control select2', 'style': 'width: 30em' }}) }}
+        </li>
+    {% endmacro %}
+
+{# ---------------------------------------------------- #}
+    <div class="container">
+
+        {{ form_start(entrepriseForm, { 'attr' : { 'class': 'm-form', 'id': 'entrepriseForm' }}) }}
+        {# BREADCRUMB #}
+        <div class="ffcb-file-ariane" style="padding: 15px 20px">
+            <span class="font-weight-bold"> > </span>
+            {% if status == "Modification de l'entreprise" %}
+                <a href="{{ path('show_entreprise', {'id': entrepriseId }) }}">L'entreprise {{ entrepriseName|upper }}</a> <span class="font-weight-bold"> > </span>
+            {% endif %}
+            <span style="color: #249dfe">{{ status }}</span>
+        </div>
+        {#------FORM HEADERS------#}
+
+        <!-- toggle button isTransporter-->
+        <div class="m-portlet">
+            <div class="m-portlet__head ffcb-bcg-color">
+                <div class="m-portlet__head-caption col-lg-8">
+                    <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                        <h3 class="m-portlet__head-text" style="color: #fbfbfb">
+                            {{ 'informations générales concernant l\'entreprise'|upper }}
+                        </h3>
+                    </div>
+                </div>
+
+                {# IS_TRANSPORTER TOGGLE BUTTON #}
+                <div class="m-portlet__head-caption col-lg-2">
+                    {{ form_widget(entrepriseForm.isTransporter) }}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="m-portlet row">
+
+            {#-----infos Entreprise-----LEFT SIDE---------#}
+            <div class="col-lg-6" style="padding: 0;">
+                <div class="m-portlet__body">
+                    <div class="m-form__section m-form__section--first" id="ffcb_info_generales" style="padding: 20px 10px 24px 13px;">
+
+                        <fieldset class="col-lg-12 ffcb-selector-border">
+                            <legend class="col-lg-5">{{ 'raison sociale'|upper }}</legend>
+                            <div class="form-group m-form__group row">
+                                <div class="col-lg-12">
+                                    <label>{{ 'raison sociale'|upper }} :<span class="red"> *</span></label>
+                                    {% if form_errors(entrepriseForm.raisonSocial) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.raisonSocial ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.raisonSocial,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control m-input ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Téléphone Bureau 1 :<span class="red"> *</span></label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.tel1) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.tel1 ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.tel1,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control phone-number ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Téléphone Bureau 2 :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.tel2) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.tel2 ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.tel2,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control phone-number ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Fax :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.fax) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.fax ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.fax,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control phone-number ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Boite mail générale :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.email) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.email ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.email,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control mail_address ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Ancien Identifiant :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.codeApe) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.ancienIdentifiant ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.ancienIdentifiant,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12"><span class="font-weight-bold">Code APE</span> :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.codeApe) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.codeApe ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.codeApe,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12"><span class="font-weight-bold">N° SIREN</span> :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.codeSiren) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.codeSiren ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.codeSiren,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">N° TVA intracom. :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.numTvaIntracom) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.numTvaIntracom ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.numTvaIntracom,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            {#<div class="form-group m-form__group row" style="margin-top: 10px">
+                                <label class="col-form-label col-lg-5 col-sm-12">Générateur Ide Compta :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12 row">
+                                    <div id="ide-compta-maker" class="col-lg-7"></div>
+                                    <button id="ide-compta-maker-btn" class="offset-1 col-lg-4 btn btn-default">Copier</button>
+                                </div>
+                            </div>#}
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Identifiant comptabilité :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.identifiantCompta) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.identifiantCompta ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.identifiantCompta,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+
+                            <div class="form-group m-form__group row">
+                                <label class="col-form-label col-lg-5 col-sm-12">Lien url :</label>
+                                <div class="col-lg-7 col-md-9 col-sm-12">
+                                    {% if form_errors(entrepriseForm.lienUrl) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.lienUrl ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.lienUrl,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            {#-----infos Entreprise-----RIGHT SIDE---------#}
+
+            <div class="col-lg-6" style="padding: 0">
+                <div class="m-portlet__body" style="min-height: 650px">
+                    <div class="m-form__section m-form__section--first" style="padding: 20px;">
+
+                        <fieldset class="col-lg-12 ffcb-selector-border">
+                            <legend class="col-lg-3">{{ 'adresse'|upper }}</legend>
+                            <div class="form-group m-form__group">
+                                <div class="col-lg-12">
+                                    <label>{{ 'adresse'|upper }} :<span class="red"> *</span></label>
+                                    {% if form_errors(entrepriseForm.adresse) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.adresse ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.adresse,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                                <div class="col-lg-12" style="margin-top: 10px">
+                                    <label>{{ 'Adresse suite' }} :</label>
+                                    {% if form_errors(entrepriseForm.adresse2) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.adresse2 ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.adresse2,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row" style="margin-top: 15px;">
+                                <div class="col-lg-8">
+                                    <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.ville ) }}</span>
+                                    {% if form_errors(entrepriseForm.ville) %}
+                                        {{ form_widget(
+                                            entrepriseForm.ville,
+                                            {
+                                                'attr': {
+                                                'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                            },
+                                            })
+                                        }}
+                                    {% else %}
+                                        <label>{{ 'ville'|upper }} :<span class="red"> *</span></label>
+                                        {{ form_widget(
+                                            entrepriseForm.ville,
+                                            {
+                                                'attr': {
+                                                'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                            },
+                                            })
+                                        }}
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-lg-4">
+
+                                    {% if form_errors(entrepriseForm.codePostal) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.codePostal ) }}</span>
+                                        {{ form_widget(
+                                            entrepriseForm.codePostal,
+                                            {
+                                                'attr': {
+                                                'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                            },
+                                            })
+                                        }}
+                                    {% else %}
+                                        <label>{{ 'code postal'|upper }} :<span class="red"> *</span></label>
+                                        {{ form_widget(
+                                            entrepriseForm.codePostal,
+                                            {
+                                                'attr': {
+                                                'class': 'form-control m-input font-weight-bold ffcb-input-dotted-border',
+                                            },
+                                            })
+                                        }}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="form-group m-form__group row" style="margin-top: 8px;">
+                                <div class="col-lg-12">
+                                    <label>{{ 'Entrez le département de l\'entreprise'|upper }}</label>
+                                    {% if form_errors(entrepriseForm.departement) %}
+                                        <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.departement ) }}</span>
+                                    {% endif %}
+                                    {{ form_widget(
+                                        entrepriseForm.departement,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control font-weight-bold select2 departement',
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-group m-form__group row" style="margin-top: 8px;">
+                            <div class="col-lg-12">
+                                <label>{{ 'Syndicat de rattachement'|upper }}</label>
+                                {% if form_errors(entrepriseForm.syndicat) %}
+                                    <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.syndicat ) }}</span>
+                                {% endif %}
+                                {{ form_widget(
+                                    entrepriseForm.syndicat,
+                                    {
+                                        'attr': {
+                                        'class': 'form-control font-weight-bold select2',
+                                    },
+                                    })
+                                }}
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+
+                            <fieldset class="col-lg-12 ffcb-selector-border">
+                                <legend class="col-lg-6">{{ 'groupe entreprise'|upper }}</legend>
+
+                                {{ form_widget(entrepriseForm.groupeEntreprise,
+                                    {
+                                        'attr': {
+                                        'class': 'form-control font-weight-bold select2',
+                                    },
+                                    })
+                                }}
+
+                            </fieldset>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <fieldset class="col-lg-12 ffcb-selector-border">
+                                <legend class="col-lg-4">{{ 'commissions'|upper }}</legend>
+                                {#{% if form_errors(entrepriseForm.tel1) %}
+                                    <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.tel1 ) }}</span>
+                                {% endif %}#}
+
+                                <ul class="commissionEntreprise" data-prototype="{{ formMacros.printCommissionRow(entrepriseForm.commissionEntreprises.vars.prototype)|e('html_attr') }}">
+                                    {% for commissionEntreprise in entrepriseForm.commissionEntreprises %}
+
+                                        {{ formMacros.printCommissionRow(commissionEntreprise) }}
+
+                                    {% endfor %}
+                                    <hr>
+                                </ul>
+
+                                <hr>
+
+                            </fieldset>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {# <!--end INFO GENERALES--> #}
+
+        <div class="m-portlet" style="padding: 20px;">
+
+            <div class="col-lg-12">
+                <label id="secteur_activite_titre">{{ "secteurs d'activité"|upper }} :<span class="red"> *</span></label>
+            </div>
+
+            <div class="row">
+
+
+                <fieldset class="col-lg-6 ffcb-selector-border text-center" style="margin: 0; height: 125px; padding: 3px;">
+                    <legend class="col-lg-3">{{ 'bovins'|upper }}</legend>
+                    <div class="row">
+                        {% for children in entrepriseForm.activity %}
+                            {% if 'veaux' == children.vars['label'] %}
+                                <div style="width: 24%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'maigres' == children.vars['label'] %}
+                                <div style="width: 24%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'elev.&reprod.' == children.vars['label'] %}
+                                <div style="width: 24%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'boucherie' == children.vars['label'] %}
+                                <div style="width: 24%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="row negoce">
+                        <div style="width: 24%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreVeaux,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N veaux'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 24%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreMaigres,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N maigres'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 24%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreElevProd,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N Elev.& Prod.'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 24%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreBoucherie,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N boucherie'
+                                },
+                            }) }}
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="col-lg-6 ffcb-selector-border text-center" style="margin: 0; height: 125px; padding: 3px;">
+                    <legend class="col-lg-3">{{ 'autres'|upper }}</legend>
+                    {#<div class="col-lg-6 text-center" style="padding: 35px 10px">#}
+                    <div class="row">
+                        {% for children in entrepriseForm.activity %}
+                            {% if 'ovins' == children.vars['label'] %}
+                                <div style="width: 19%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'porcins' == children.vars['label'] %}
+                                <div style="width: 19%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'equins' == children.vars['label'] %}
+                                <div style="width: 19%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'caprins' == children.vars['label'] %}
+                                <div style="width: 19%; display: inline-block">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                            {% if 'volailles' == children.vars['label'] %}
+                                <div style="width: 19%; display: inline-block" class="transporteur">
+                                    {{ form_label(children) }}
+                                    {{ form_widget(children) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="row negoce">
+                        <div style="width: 19%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreOvins,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N ovins'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 19%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombrePorcins,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N porcins'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 19%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreEquins,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N equins.'
+                                },
+                            }) }}
+                        </div>
+                        <div style="width: 19%; display: inline-block">
+                            {{ form_widget(entrepriseForm.nombreCaprins,{
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'N caprins'
+                                },
+                            }) }}
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+
+            <div class="ffcb-selector-border">
+
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        <div>Autre activité :</div>
+                    </div>
+                    <div class="offset-3 col-lg-2 transporteur">
+                        <div>Durée de voyage réalisés :</div>
+                    </div>
+
+                    <div class="col-lg-2 negoce">
+                        <div>Volume d'animaux :</div>
+                    </div>
+
+                    <div class="col-lg-4 negoce">
+                        <div>Autre spécialité :</div>
+                    </div>
+
+                    <div class="col-lg-3 negoce">
+                        <div>Transport pour compte d'autrui :</div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        {{ form_widget(
+                            entrepriseForm.autreActivite,
+                            {
+                                'attr': {
+                                'class': 'form-control m-input ffcb-input-dotted-border',
+                            },
+                            })
+                        }}
+                    </div>
+
+                    <div class="offset-3 col-lg-2 transporteur">
+                        {{ form_widget(
+                            entrepriseForm.transporteur.dureeVoyage,
+                            {
+                                'attr': {
+                                'class': 'form-control ffcb-input-dotted-border',
+                            },
+                            })
+                        }}
+                    </div>
+
+                    <div class="col-lg-2 negoce">
+                        {{ form_widget(
+                            entrepriseForm.volumeAnimaux,
+                            {
+                                'attr': {
+                                'class': 'form-control ffcb-input-dotted-border',
+                            },
+                            })
+                        }}
+                    </div>
+
+                    <div class="col-lg-4 negoce">
+                        {{ form_widget(
+                            entrepriseForm.autreSpecialite,
+                            {
+                                'attr': {
+                                'class': 'form-control ffcb-input-dotted-border',
+                            },
+                            })
+                        }}
+                    </div>
+
+                    <div class="col-lg-3 negoce" style="padding: 10px">
+                        {{ form_widget(entrepriseForm.transportPourAutrui) }}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        {# numéro EDE Titles #}
+        <div class="m-portlet" style="padding: 10px">
+
+            <div class="form-group m-form__group row negoce" style="padding: 0;">
+
+                <div class="col-lg-2 col-md-9 col-sm-12">
+                    N° EDE (8 chiffres)
+                </div>
+                <div class="col-lg-3 col-md-9 col-sm-12">
+                    <div>Négoce :<span class="red"> *</span></div>
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <div>Centre Rassemblement :<span class="red"> *</span></div>
+                </div>
+
+                <div class="col-lg-3 col-md-9 col-sm-12">
+                    <div>Elevage :<span class="red"> *</span></div>
+                </div>
+            </div>
+
+            {# numéro EDE inputs #}
+            <div class="form-group m-form__group row negoce" style="padding-top: 2px;">
+
+                <div class="offset-2 col-lg-3 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.numEdeNegoce,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.numEdeCentre,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+
+                <div class="col-lg-3 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.numEdeElevage,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+            </div>
+
+            {#</div>#}
+
+
+            {# TRANSPORTEUR licences #}
+            {#<div class="m-portlet transporteur" id="licences_transporteur" style="display: none">#}
+
+            <div class="form-group m-form__group row transporteur" style="padding: 0; display: none">
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <div>N° agrément transport :<span class="red"> *</span></div>
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <div>Nombre de Licence Transport interne :<span class="red"> *</span></div>
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <div>Nombre de Licence intracommunautaire :<span class="red"> *</span></div>
+                </div>
+
+            </div>
+
+            {# TRANSPORTEUR licences inputs #}
+            <div class="form-group m-form__group row transporteur" style="padding-top: 2px;">
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.transporteur.numAgrementTransport,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.transporteur.nombreLicenseInterne,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    {{ form_widget(
+                        entrepriseForm.transporteur.nombreLicenceIntracom,
+                        {
+                            'attr': {
+                            'class': 'form-control ffcb-input-dotted-border',
+                        },
+                        })
+                    }}
+                </div>
+
+
+
+            </div>
+        </div>
+        {# END TRANSPORTEUR licences #}
+
+        {# NOMBRE EMPLOYES #}
+        <div class="m-portlet">
+            <div class="jumbotron" style="background: #fcfcc2;">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                                                    <span class="m-portlet__head-icon m--hide">
+                                                        <i class="la la-gear"></i>
+                                                    </span>
+                        <h4 class="m-portlet__head-text" style="color: #313e47">
+                            Pour la reconnaissance de la FFCB auprès du Ministère du travail, merci de remplir la
+                            ligne ci-après :
+                        </h4>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-5 col-sm-12 text-right">Nombre d'employés :<span class="red"> *</span></label>
+                    <div class="col-lg-7 col-md-9 col-sm-12">
+                        {% if form_errors(entrepriseForm.nombreEmployes) %}
+                            <span class="m-form__help"
+                                  style="color: #ff0d00">{{ form_errors( entrepriseForm.nombreEmployes ) }}</span>
+                        {% endif %}
+                        {{ form_widget(
+                            entrepriseForm.nombreEmployes,
+                            {
+                                'attr': {
+                                'class': 'form-control phone-number ffcb-input-dotted-border',
+                            },
+                            })
+                        }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# AUTRES INFORMATIONS #}
+        <div class="row">
+            <div class="col-lg-12" style="padding: 0">
+
+                <!--begin::Header-->
+                <div class="m-portlet">
+                    <div class="m-portlet__head ffcb-bcg-color">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                                <h3 class="m-portlet__head-text" style="color: #fbfbfb">
+                                    {{ 'autres informations'|upper }}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {# TOGGLER BETWEEN id="contactResponsableList" and id="contactResponsable" #}
+        <div class="row text-right" style="position: relative; margin-bottom: 30px;">
+            <div class="btn btn-success" id="switchContactButton" style="padding: 5px; margin-bottom:3px;position: absolute; right: 3px;">> Choisir depuis la BDD ></div>
+        </div>
+
+
+
+        {#------------------------------------------------------------------#}
+        <fieldset class="col-lg-12 ffcb-selector-border" style="padding: 0; margin: 0;">
+            <legend class="col-lg-3">{{ 'personne responsable'|upper }}</legend>
+
+            <div class="table table-bordered" id="contactResponsable" style="padding-bottom: 5px">
+
+                <div class="row" style="padding: 0 10px">
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Nom</h6>
+                    </div>
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Prénom</h6>
+                    </div>
+                    <div style="padding: 1px; width: 26%">
+                        <h6>Email</h6>
+                    </div>
+                    <div style="padding: 1px; width: 15%">
+                        <h6>N° portable </h6>
+                    </div>
+
+                    <div style="padding: 1px; width: 16%">
+                        <h6>Date de naissance</h6>
+                    </div>
+                    <div style="padding: 1px; width: 2%">
+                        <h6>Privil.</h6>
+                    </div>
+                </div>
+
+                <hr>
+                <ul style="padding: 10px">
+                    {% if form_errors(entrepriseForm.contactResponsable) %}
+                        <span class="red">{{ form_errors(entrepriseForm.contactResponsable) }}</span>
+                    {% endif %}
+                    <li class="row" style="padding-bottom: 10px;">
+                        <div style="padding: 1px; width: 20%">
+                            {% if form_errors(entrepriseForm.contactResponsable.nom) %}
+                                <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.contactResponsable.nom ) }}</span>
+                            {% endif %}
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.nom,
+                                {
+                                    'attr': {
+                                    'class': 'form-control m-input',
+                                },
+                                })
+                            }}
+                        </div>
+
+                        <div style="padding: 1px; width: 20%">
+                            {% if form_errors(entrepriseForm.contactResponsable.prenom) %}
+                                <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.contactResponsable.prenom ) }}</span>
+                            {% endif %}
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.prenom,
+                                {
+                                    'attr': {
+                                    'class': 'form-control m-input',
+                                },
+                                })
+                            }}
+                        </div>
+
+                        <div style="padding: 1px; width: 25%">
+                            {% if form_errors(entrepriseForm.contactResponsable.emailContact) %}
+                                <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.contactResponsable.emailContact ) }}</span>
+                            {% endif %}
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.emailContact,
+                                {
+                                    'attr': {
+                                    'class': 'form-control m-input mail-address',
+                                },
+                                })
+                            }}
+                        </div>
+
+                        <div style="padding: 1px; width: 15%">
+                            {% if form_errors(entrepriseForm.contactResponsable.telPortable) %}
+                                <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.contactResponsable.telPortable ) }}</span>
+                            {% endif %}
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.telPortable,
+                                {
+                                    'attr': {
+                                    'class': 'form-control m-input phone-number',
+                                },
+                                })
+                            }}
+                        </div>
+
+                        <div style="padding: 1px; width: 15%">
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.dateNaissance,
+                                {
+                                    'attr': {
+                                    'class' : 'form-control m-input',
+                                },
+                                })
+                            }}
+                        </div>
+
+                        <div style="width: 2%; border: 0;">
+                            {% if form_errors(entrepriseForm.contactResponsable.isPrivileged) %}
+                                <span class="m-form__help" style="color: #ff0d00">{{ form_errors( entrepriseForm.contactResponsable.isPrivileged ) }}</span>
+                            {% endif %}
+                            {{ form_widget(
+                                entrepriseForm.contactResponsable.isPrivileged,
+                                {
+                                    'attr': {
+                                    'class': 'form-control m-input',
+                                    'style' : 'width: 13px'
+                                },
+                                })
+                            }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            {#toggle 2nd choice: "Choisir depuis la BDD" #}
+            <div class="table table-bordered switch-display-off" id="contactResponsableList" style="padding-bottom: 5px;">
+
+                <div class="row" style="padding: 0 10px">
+
+                    <div style="padding: 1px; width: 28%">
+                        <h6>Email</h6>
+                    </div>
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Nom</h6>
+                    </div>
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Prénom</h6>
+                    </div>
+
+                    <div style="padding: 1px; width: 15%">
+                        <h6>N° portable </h6>
+                    </div>
+
+                    <div style="padding: 1px; width: 15%">
+                        <h6>Date de naissance</h6>
+                    </div>
+
+                </div>
+                <hr>
+                <ul style="padding: 10px">
+                    <li class="row" style="padding-bottom: 10px;">
+
+                        <div style="padding: 1px; width: 26%">
+                            {# LIST CONTACT RESPONSABLE #}
+
+                            {{ form_widget(
+                                entrepriseForm.contactResponsableList,
+                                {
+                                    'attr': {
+                                    'class': 'form-control select2',
+                                    'id' : 'contactResponsibleList',
+                                    'style': 'width: 100%'
+                                },
+                                })
+                            }}
+                        </div>
+                        <div class="font-weight-bold" id="responsableFromListPrenom" style="color: #803238; padding: 12px 10px;width: 20%;"></div>
+
+                        <div class="font-weight-bold" id="responsableFromListNom" style="color: #803238; padding: 12px 10px;width: 20%;"></div>
+
+                        <div class="font-weight-bold" id="responsableFromListTel" style="color: #803238; padding: 12px 10px;width: 15%;"></div>
+
+                        <div class="font-weight-bold" id="responsableFromListDate" style="color: #803238; padding: 12px 10px;width: 17%;"></div>
+
+                    </li>
+                </ul>
+            </div>
+        </fieldset>
+        {#-------#}
+
+        {# CONTACTS COLLECTIONS dynamic add #}
+        <div class="m-portlet" id="contact-fields-list" style="margin-top: 20px">
+
+            <fieldset class="col-lg-12 ffcb-selector-border" style="padding: 0">
+                <legend class="col-lg-3">{{ 'autres contacts'|upper }}</legend>
+                <div class="row" style="padding: 0 10px">
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Nom</h6>
+                    </div>
+                    <div style="padding: 1px; width: 20%">
+                        <h6>Prénom</h6>
+                    </div>
+                    <div style="padding: 1px; width: 28%">
+                        <h6>Email</h6>
+                    </div>
+                    <div style="padding: 1px; width: 15%">
+                        <h6>N° portable </h6>
+                    </div>
+
+                    <div style="padding: 1px; width: 15%">
+                        <h6>Date de naissance</h6>
+                    </div>
+                    <div style="padding: 1px; width: 2%">
+                        <h6>Privil.</h6>
+                    </div>
+                </div>
+
+                <hr>
+                <ul class="contacts" data-prototype="{{ formMacros.printContactsRow(entrepriseForm.contacts.vars.prototype)|e('html_attr') }}">
+                    {#iterate over each existing tag and render its only field: name#}
+                    {% for contact in entrepriseForm.contacts %}
+                        {#! <li></li> USED BY JAVASCRIPT for inserting Contact collections (<li></li> are actually in Macros, which are used for a normal visualization of Collections) #}
+                        {{ formMacros.printContactsRow(contact) }}
+                    {% endfor %}
+                </ul>
+            </fieldset>
+        </div>
+
+        <!-- toggle button "souhaite_adherer" -->
+        <div class="m-portlet">
+
+            <div class="m-portlet__head ffcb-bcg-color">
+                <div class="m-portlet__head-caption col-lg-10">
+                    <div class="m-portlet__head-title">
+												<span class="m-portlet__head-icon m--hide">
+													<i class="la la-gear"></i>
+												</span>
+                        <span class="m-portlet__head-text" id="raison_adhesion-title" style="color: #fbfbfb">
+                                Souhaite adhérer et verse les cotisations pour l'année {{ 'now'|date('Y') }}, selon les modalités ci-après
+                            </span>
+                    </div>
+                </div>
+
+                {# IS_TRANSPORTER TOGGLE BUTTON #}
+                <div class="m-portlet__head-caption col-lg-2">
+                    {{ form_widget(entrepriseForm.souhaiteAdherer) }}
+                </div>
+            </div>
+
+            <div class="jumbotron" style="margin: 0;">
+
+                <div class="row">
+
+
+                </div>
+            </div>
+
+            <div class="m-portlet__body" id="adhesion" style="display: {{ entrepriseForm.souhaiteAdherer.vars.checked ? 'none' : '' }};">
+
+                <div class="row">
+
+                    <div class="col-lg-7">
+                        <div class="row" style="padding: 5px;">
+                            <label class="col-lg-8" style="padding: 10px;">figurer dans <span class="font-weight-bold">{{ 'l\'annuaire des adhérents de la ffcb :'|upper }}</span></label>
+                            <div class="bootstrap-switch-container col-lg-2" style="width: 133px; margin-left: 0;">
+                                {{ form_widget(entrepriseForm.figurerAnnuaireAdherents, {
+                                    'attr': {
+                                        'style': 'width: 17px',
+                                        'class': 'form-control'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding: 5px;">
+                            <label class="col-lg-8" style="padding: 10px;">figurer dans <span class="font-weight-bold">l'annuaire sur le site de la Fédération :</span></label>
+                            <div class="bootstrap-switch-container col-lg-2" style="width: 133px; margin-left: 0px;">
+                                {{ form_widget(entrepriseForm.figurerAnnuaireInternet, {
+                                    'attr': {
+                                        'style': 'width: 17px',
+                                        'class': 'form-control'
+                                    }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="row">
+                            <label class="col-form-label col-lg-3 col-sm-12">au nom : <span class="red">*</span></label>
+                            <div class="col-lg-9 col-md-9 col-sm-12">
+
+                                {{ form_widget(entrepriseForm.figurerAuNomDe,
+                                    {
+                                        'attr': {
+                                        'class': 'form-control m-input font-weight-bold',
+                                    },
+                                    }) }}
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {# NE SOUHAITE PAS ADHERER #}
+
+            <div class="m-portlet__body" id="raison_non_adhesion" style="display: {{ entrepriseForm.souhaiteAdherer.vars.checked ? '' : 'none' }};">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_widget(entrepriseForm.raisonNonAdhesion, {
+                            'attr': {
+                                'class': 'form-control m-input font-weight-bold'
+                            }
+                        }) }}
+                    </div>
+                    <div class="col-lg-3" id="radionButtonInput">
+                        {{ form_widget(entrepriseForm.radioButtonInput, {
+                            'attr': {
+                                'class': 'form-control m-input m_datepicker_1 border border-danger'
+                            }
+                        }) }}
+                    </div>
+
+                    <div class="col-lg-8 font-weight-bold" id="radionButtonTextarea">
+                        {{ form_widget(entrepriseForm.radioButtonTextarea, {
+                            'attr': {
+                                'class': 'form-control ffcb-form-textarea border border-danger'
+                            }
+                        }) }}
+                    </div>
+                </div>
+            </div>{# END raison non adhésion #}
+        </div>
+
+        <div class="jumbotron">
+
+            <div class="row">
+
+                <h5 class="col-lg-9" style="padding: 7px">
+                    {{ "chiffre d'affaire total du dernier exercice clos :"|upper  }}
+                </h5>
+                <div class="bootstrap-switch-container col-lg-2">
+                    {{ form_widget(entrepriseForm.chiffreDernierTotal, {
+                        'attr': {
+                            'class': 'form-control m-input ffcb-input-dotted-border'
+                        }
+                    }) }}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="jumbotron" style="padding: 15px 0 0;">
+            <h5 class="col-lg-9" style="padding: 0 0 12px 33px;">
+                {{ "commentaire"|upper  }}
+            </h5>
+
+
+            <div class="m-portlet">
+                {{ form_widget(entrepriseForm.commentaires) }}
+            </div>
+        </div>
+        {# SUBMIT #}
+        <button type="submit" class="btn btn-primary">Soumettre</button>
+        <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+
+        {{ form_widget(entrepriseForm._token) }}
+        {{ form_end(entrepriseForm, {'render_rest': false }) }}
+
+    </div> {# END container #}
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('assets/app/js/contactCollectionAdding.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/commissionCollectionAdding.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/commEntrCollection.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/adhesion/raisonNonAdhesion.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/form-repeater.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/adhesion.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/ideComptaMaker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/typeEntreprise.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/nombreAnimalParActivite.js') }}" type="text/javascript"></script>
+    {# "adhésion.js" doit précéder "bootstrap-toggle.js" pour que switch-toggle se charge dynamiquement #}
+    <script src="{{ asset('assets/bootstrap_toggle/js/bootstrap-toggle.min.js') }}" type="text/javascript"></script>
+    {#<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>#}
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/input-mask.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/summernote.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/contactResponsibleAjax.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $(".select2").select2(
+                {placeholder: "*"}
+            );
+        });
+    </script>
+{% endblock %}
+
+

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+    {{ parent() }} Création Région
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+
+
+
+        {{ form_start(departmentForm, {'attr': {'class': 'm-form m-form--fit m-form--label-align-right', 'id': 'departmentForm'}}) }}
+
+        <div class="m-portlet__body">
+            <fieldset class="col-lg-10 ffcb-selector-border">
+                <legend class="col-lg-4">{{ 'création de département'|upper }}</legend>
+
+
+                <div class="form-group m-form__group row" style="margin: 10px 0">
+                    <label for="example-text-input" class="col-3 col-form-label">Nom Département : <span class="red">*</span></label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red" style="padding: 20px;">{{ form_errors(departmentForm.nom) }}</span>
+                        {{ form_widget(departmentForm.nom, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row" style="margin: 10px 0">
+                    <label for="example-text-input" class="col-3 col-form-label">Numéro département : {#<span class="red">*</span>#}</label>
+                    <div class="offset-1 col-lg-8">
+                        <span class="red" style="padding: 20px;">{{ form_errors(departmentForm.numDepart) }}</span>
+                        {{ form_widget(departmentForm.numDepart, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row departemental" style="margin: 10px 0">
+                    <label for="example-text-input" class="col-3 col-form-label">Rattacher à une région :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(departmentForm.regions, {'attr': {'class': 'form-control select2'}}) }}
+                    </div>
+                </div>
+
+
+
+            </fieldset>
+
+
+            {# SUBMIT #}
+            <div style="padding: 30px">
+                <button type="submit" class="btn btn-primary offset-1">Soumettre</button>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </div>
+        {{ form_widget(departmentForm._token) }}
+        {{ form_end(departmentForm, {'render_rest': false }) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/select2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/app/js/syndicatCreationForm.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $(".select2").select2(
+                {placeholder: "*"}
+            );
+        });
+    </script>
+{% endblock %}
+

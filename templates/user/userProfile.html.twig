@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container">
+
+    <div class="m-login__logo text-center">
+        <a href="javascript:">
+            <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+        </a>
+    </div>
+
+    <fieldset class="col-lg-6 ffcb-selector-border">
+        <legend class="col-lg-4">{{'votre profil'|capitalize}}</legend>
+
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label">Email :</label>
+            <div class="offset-1 col-lg-8 font-weight-bold">
+                {{ user.email }}
+
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label">Prénom :</label>
+            <div class="offset-1 col-lg-8 font-weight-bold">
+                {{ user.firstName }}
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label">Nom :</label>
+            <div class="offset-1 col-lg-8 font-weight-bold">
+
+                {{ user.lastName }}
+            </div>
+        </div>
+        <div class="form-group m-form__group row">
+            <label for="example-text-input" class="col-3 col-form-label">Rôles :</label>
+            <div class="offset-1 col-lg-8 font-weight-bold">
+                {% for role in  user.roles %}
+                    {{ role }}
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+
+
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

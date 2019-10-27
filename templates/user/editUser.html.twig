@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} Créer Groupes
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+
+        {{ form_start(userForm, {'attr': {'id': 'ffcb_admin_user', 'class': 'm-form__group form-group'}}) }}
+        <div class="row">
+            <fieldset class="col-lg-6 ffcb-selector-border">
+                <legend class="col-lg-7">{{'édition d\'Utilisateur'|capitalize}}</legend>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Email :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.email) }}</span>
+                        {{ form_widget(userForm.email, {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Prénom :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.firstName) }}</span>
+                        {{ form_widget(userForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Nom :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.lastName) }}</span>
+                        {{ form_widget(userForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Personnaliser M.p. :</label>
+                    <div class="offset-1 col-lg-8">
+                        <span style="color: #fe0017">{{ form_errors(userForm.password) }}</span>
+                        {{ form_widget(userForm.password, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <hr>
+
+                    <label> Assignez un droit à l'utilisateur</label>
+                    <div class="row">
+                        {#<span style="color: #fe0017">{{ form_errors(userForm.roles) }}</span>#}
+                        {% for role in userForm.roles.children %}
+                            <div class="form-group m-form__group offset-1 col-lg-3 ffcb-selector-border">
+                                <label for="example-text-input" class="text-center">{{ form_label(role) }}</label>
+                                <div class="offset-1 col-lg-8 text-center">
+                                    {{ form_widget(role) }}
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+
+
+                {# SUBMIT #}
+                <div class="row">
+                    <div class="offset-8">
+                        <button type="submit" class="btn btn-primary" style="margin: 20px">Modifier</button>
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+
+
+        {{ form_widget(userForm._token) }}
+        {{ form_end(userForm, {'render_rest': false }) }}
+        {# end USER CREATION FORM #}
+
+
+    </div>
+
+{% endblock %}

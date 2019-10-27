@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   {{ parent() }} Créer Etablissement
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('assets/bootstrap_toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="ffcb_etablissement_form">
+
+        <div class="m-login__logo text-center">
+            <a href="javascript:">
+                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+            </a>
+        </div>
+        {{ form_start(etablissementForm, {'attr': {'class': 'm-form m-form--fit m-form--label-align-right', 'id': 'etablissementForm'}}) }}
+
+        <div class="ffcb-file-ariane" style="padding: 15px 90px">
+            <a href="{{ path('list_enterprises') }}">Liste des entreprises</a> /
+            <a href="{{ path('show_entreprise', {'id': entrepriseId }) }}">L'entreprise {{ entrepriseName }}</a> /
+            <span style="color: #00feef">Création/édition établissement</span>
+        </div>
+
+        <div class="m-portlet__body">
+            <fieldset class="col-lg-10 ffcb-selector-border">
+                <legend class="col-lg-4">{{ 'établissement'|upper }}</legend>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Nom de l'établissement :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.nom, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Téléphone bureau 1 :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.telBureau1, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Téléphone bureau 2 :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.telBureau2, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Email :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.emailBureau, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Fax :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.fax, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Date de cessation :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.dateCessation, {'attr': {'class': 'form-control m-input m_datepicker_1'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">N° Code Siret :</label>
+                    <div class="offset-1 col-8">
+                        {{ form_widget(etablissementForm.codeSiret, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Siège social :</label>
+                    <div class="offset-1 col-8">
+                        {{ form_widget(etablissementForm.siegeSocial, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+            </fieldset>
+
+
+            {#----------------------------ADRESSE-------------------------------#}
+            <fieldset class="col-lg-10 ffcb-selector-border">
+                <legend class="col-lg-2">{{ 'Adresse'|upper }}</legend>
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Adresse :</label>
+                    <div class="offset-1 col-lg-8">
+                        {{ form_widget(etablissementForm.adresse, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+
+
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Ville :</label>
+                    <div class="offset-1 col-8">
+                        {{ form_widget(etablissementForm.ville, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Code postal :</label>
+                    <div class="offset-1 col-8">
+                        {{ form_widget(etablissementForm.codePostal, {'attr': {'class': 'form-control m-input'}}) }}
+                    </div>
+                </div>
+            </fieldset>
+
+            {#----------------------------INFOS GENERALES-------------------------------#}
+            {#<div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>#}
+            <fieldset class="col-lg-10 ffcb-selector-border">
+                <legend class="col-lg-2">{{ 'relations'|upper }}</legend>
+
+                <div class="form-group m-form__group row">
+                    <div class="col-lg-6">
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-lg-12 text-left col-form-label">{{ 'rattachement au syndicat'|upper }} :</label>
+                        </div>
+
+                            <div class="col-lg-12">
+                                <div class="col-lg-12" style="padding: 5px">
+                                    {{ form_widget(
+                                        etablissementForm.syndicat,
+                                        {
+                                            'attr': {
+                                            'class': 'form-control font-weight-bold select2 '
+                                        },
+                                        })
+                                    }}
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group m-form__group row">
+                            <label for="example-text-input" class="col-lg-12 text-left col-form-label">{{ 'département'|upper }} :</label>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="col-lg-12" style="padding: 5px">
+                                {{ form_widget(
+                                    etablissementForm.departement,
+                                    {
+                                        'attr': {
+                                        'class': 'form-control font-weight-bold select2 '
+                                    },
+                                    })
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+
+            <fieldset class="col-lg-10 ffcb-selector-border">
+                <legend class="col-lg-2">{{ 'commentaire'|upper }}</legend>
+
+                {{ form_widget(etablissementForm.commentaire) }}
+            </fieldset>
+
+
+            {# SUBMIT #}
+            <div style="padding: 30px">
+                <button type="submit" class="btn btn-primary offset-1">Soumettre</button>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </div>
+        {{ form_widget(etablissementForm._token) }}
+        {{ form_end(etablissementForm, {'render_rest': false }) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/bootstrap_toggle/js/bootstrap-toggle.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/input-mask.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/summernote.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/select2.js') }}" type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $(".select2").select2(
+                {placeholder: "*"}
+            );
+        });
+    </script>
+{% endblock %}
+

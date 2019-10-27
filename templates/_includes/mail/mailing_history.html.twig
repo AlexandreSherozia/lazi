@@ -1,0 +1,40 @@
+<div class="offset-2" style="margin-bottom: 20px">
+    <h3 style="color: #a7a7a7;">{{ "historique des envois de mails"|upper }}</h3>
+</div>
+<div class="m-portlet__body">
+
+    <!--begin::Section-->
+    <div class="m-section">
+        <div class="m-section__content">
+            <table class="table table-striped m-table">
+                <thead>
+                <tr>
+                    <th>Objet</th>
+                    <th>Auteur</th>
+                    <th>De la part</th>
+                    <th>Date d'envoi</th>
+                </tr>
+                </thead>
+                <tbody>
+                {# by "history" action in SmsController #}
+                {% for messenger in modelsList %}
+                    <tr>
+                        <td>{{ messenger.messageHeader }}</td>
+                        <td>{{ messenger.senderName }}</td>
+                        <td>
+                            {{ messenger.senderFrom }}
+                        </td>
+                        <td>{{ messenger.datetime|date }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(modelsList) }}
+            </div>
+        </div>
+    </div>
+
+    <!--end::Section-->
+</div>
