@@ -82,12 +82,14 @@
                                 <a href="#" class="m-menu__link "><span class="m-menu__link-text">Archive</span></a>
                             </li>
 
+
+                            {# Administration #}
                             <li class="m-menu__item m-menu__item--active m-menu__item--submenu m-menu__item--rel m-menu__item--open-dropdown m-menu__item--hover"
                                 m-menu-submenu-toggle="click" aria-haspopup="true"><a href="javascript:;"
                                                                                       class="m-menu__link m-menu__toggle"
                                                                                       title="Non functional dummy link"><span
                                             class="m-menu__item-here"></span><span
-                                            class="m-menu__link-text">Actions</span><i
+                                            class="m-menu__link-text red">Administration</span><i
                                             class="m-menu__hor-arrow la la-angle-down"></i><i
                                             class="m-menu__ver-arrow la la-angle-right"></i></a>
                                 <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left"><span
@@ -109,21 +111,17 @@
                                                                                              class="m-menu__link m-menu__toggle"
                                                                                              title="Non functional dummy link"><i
                                                         class="m-menu__link-icon flaticon-business"></i><span
-                                                        class="m-menu__link-text">Manage Orders</span><i
+                                                        class="m-menu__link-text">Annonces</span><i
                                                         class="m-menu__hor-arrow la la-angle-right"></i><i
                                                         class="m-menu__ver-arrow la la-angle-right"></i></a>
                                             <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right">
                                                 <span class="m-menu__arrow "></span>
                                                 <ul class="m-menu__subnav">
+
                                                     <li class="m-menu__item " m-menu-link-redirect="1"
-                                                        aria-haspopup="true"><a href="inner.html"
+                                                        aria-haspopup="true"><a href="{{ path('create_advert') }}"
                                                                                 class="m-menu__link "><span
-                                                                    class="m-menu__link-text">Latest Orders</span></a>
-                                                    </li>
-                                                    <li class="m-menu__item " m-menu-link-redirect="1"
-                                                        aria-haspopup="true"><a href="inner.html"
-                                                                                class="m-menu__link "><span
-                                                                    class="m-menu__link-text">Pending Orders</span></a>
+                                                                    class="m-menu__link-text">Page principale</span></a>
                                                     </li>
                                                     <li class="m-menu__item " m-menu-link-redirect="1"
                                                         aria-haspopup="true"><a href="inner.html"

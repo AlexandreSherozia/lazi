@@ -72,7 +72,7 @@
         {% if 'app_homepage' == app.request.attributes.get('_route') %}
             {% set height = '317px' %}
         {% else %}
-            {% set height = '0' %}
+            {% set height = '50px' %}
         {% endif %}
         <div id="main_container" style="margin-top: {{ height }}">
             {% block content '' %}
