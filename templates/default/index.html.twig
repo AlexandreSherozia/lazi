@@ -10,81 +10,95 @@
     <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
 
-            <div class="m-portlet">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-												<span class="m-portlet__head-icon">
-													<i class="flaticon-calendar"></i>
-												</span>
-                            <h3 class="m-portlet__head-text m--font-primary">
-                                Portlet Action Buttons
-                            </h3>
+            {% for advert in adverts %}
+                <div class="m-portlet">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text m--font-primary">
+                                    {{ advert.title|upper }}
+                                </h3>
+                                <span class="datetime">
+                                    <span class="datetime_color"><i class="flaticon-calendar-with-a-clock-time-tools"></i>
+                                        <span style="margin-left: 5px">{{ advert.createdAt|date('d-m-Y H:i:s') }}</span>
+                                    </span>
+                                </span>
+                                <span class="datetime">
+                                    <span class="datetime_color"><i class="flaticon-calendar-with-a-clock-time-tools"></i>
+                                        <span style="margin-left: 5px">{{ advert.createdAt|date('d-m-Y H:i:s') }}</span>
+                                    </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="m-portlet__head-tools">
-                        <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item">
-                                <a href="#" class="m-portlet__nav-link btn btn-success m-btn m-btn--pill m-btn--air">
-                                    Save
-                                </a>
-                            </li>
-                            <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover">
-                                <a href="#" class="m-portlet__nav-link m-dropdown__toggle btn btn-primary m-btn m-btn--pill m-btn--air">
-                                    Settings
-                                </a>
-                                <div class="m-dropdown__wrapper">
-                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-                                    <div class="m-dropdown__inner">
-                                        <div class="m-dropdown__body">
-                                            <div class="m-dropdown__content">
-                                                <ul class="m-nav">
-                                                    <li class="m-nav__section m-nav__section--first">
-                                                        <span class="m-nav__section-text">Quick Actions</span>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-share"></i>
-                                                            <span class="m-nav__link-text">Activity</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-chat-1"></i>
-                                                            <span class="m-nav__link-text">Messages</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-info"></i>
-                                                            <span class="m-nav__link-text">FAQ</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-lifebuoy"></i>
-                                                            <span class="m-nav__link-text">Support</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__separator m-nav__separator--fit">
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Cancel</a>
-                                                    </li>
-                                                </ul>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <div class="m-portlet__head-tools">
+                                <ul class="m-portlet__nav">
+                                    <li class="m-portlet__nav-item">
+                                        <a href="{{ path('create_advert') }}" class="m-portlet__nav-link btn btn-success m-btn m-btn--pill m-btn--air">
+                                            Nouvelle Annonce
+                                        </a>
+                                    </li>
+                                    <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" m-dropdown-toggle="hover">
+                                        <a href="javascript:" class="m-portlet__nav-link m-dropdown__toggle btn btn-primary m-btn m-btn--pill m-btn--air">
+                                            Administrateur
+                                        </a>
+                                        <div class="m-dropdown__wrapper">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+                                            <div class="m-dropdown__inner">
+                                                <div class="m-dropdown__body">
+                                                    <div class="m-dropdown__content">
+                                                        <ul class="m-nav">
+                                                            <li class="m-nav__section m-nav__section--first">
+                                                                <span class="m-nav__section-text">Quick Actions</span>
+                                                            </li>
+                                                            <li class="m-nav__item">
+                                                                <a href="" class="m-nav__link">
+                                                                    <i class="m-nav__link-icon flaticon-share"></i>
+                                                                    <span class="m-nav__link-text">Activity</span>
+                                                                </a>
+                                                            </li>
+                                                            {#<li class="m-nav__item">
+                                                                <a href="" class="m-nav__link">
+                                                                    <i class="m-nav__link-icon flaticon-chat-1"></i>
+                                                                    <span class="m-nav__link-text">Messages</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="m-nav__item">
+                                                                <a href="" class="m-nav__link">
+                                                                    <i class="m-nav__link-icon flaticon-info"></i>
+                                                                    <span class="m-nav__link-text">FAQ</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="m-nav__item">
+                                                                <a href="" class="m-nav__link">
+                                                                    <i class="m-nav__link-icon flaticon-lifebuoy"></i>
+                                                                    <span class="m-nav__link-text">Support</span>
+                                                                </a>
+                                                            </li>#}
+                                                            <li class="m-nav__separator m-nav__separator--fit">
+                                                            </li
+
+                                                            <li class="m-nav__item">
+                                                                <a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Supprimer</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+
                     </div>
+                    <div class="main_adverts">
+                        {{ advert.content|raw }}
+                    </div>
+
                 </div>
-                <div class="main_adverts">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled. Lorem Ipsum is simply
-                    dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.
-                </div>
-            </div>
+            {% endfor %}
+
 
         </div>
     </div>
@@ -94,6 +108,4 @@
         <i class="la la-arrow-up"></i>
     </div>
 
-
-    {#</body>#}
 {% endblock %}

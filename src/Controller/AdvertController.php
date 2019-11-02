@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\Advert;
 use App\Form\AdvertType;
+use App\Repository\AdvertRepository;
 use App\Service\AdvertManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdvertController extends AbstractController
 {
+	/**
+	 * @var AdvertRepository
+	 */
+	private $advertRepository;
+
+	/**
+	 * AdvertController constructor.
+	 *
+	 * @param AdvertRepository $advertRepository
+	 */
+	public function __construct(AdvertRepository $advertRepository)
+	{
+		$this->advertRepository = $advertRepository;
+	}
 
 
 	/**

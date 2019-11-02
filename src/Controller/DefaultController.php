@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AdvertRepository;
 use App\Repository\ContactRepository;
 use App\Repository\EnterpriseRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -14,18 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends AbstractController
 {
-    /**
-     * @var ContactRepository
-     */
-    private $contactRepository;
 
-    /**
-     * DefaultController constructor.
-     * @param ContactRepository $contactRepository
-     */
-    public function __construct(ContactRepository $contactRepository)
+	/**
+	 * @var AdvertRepository
+	 */
+	private $advertRepository;
+
+	/**
+	 * DefaultController constructor.
+	 *
+	 * @param AdvertRepository $advertRepository
+	 */
+	public function __construct(AdvertRepository $advertRepository)
     {
-        $this->contactRepository = $contactRepository;
+	    $this->advertRepository = $advertRepository;
     }
 
     /**
@@ -33,11 +36,10 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-
-        $contactsStats = $this->contactRepository->getContactStats();
+	    $adverts = $this->advertRepository->findAll();
 
         return $this->render('default/index.html.twig', [
-            'contactStats' => $contactsStats,
+            'adverts' => $adverts,
 
         ]);
     }

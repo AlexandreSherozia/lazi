@@ -83,11 +83,17 @@ class User implements UserInterface
 	 */
 	private $token;
 
-    public function __construct()
-    {
-    	$this->registrationDate = new \DateTime();
-    	$this->roles[] = 'ROLE_VISITOR';
-    }
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advert", mappedBy="author", orphanRemoval=true)
+     */
+    private $adverts;
+
+	public function __construct()
+	{
+		$this->registrationDate = new \DateTime();
+		$this->roles[]          = 'ROLE_VISITOR';
+		$this->adverts          = new ArrayCollection();
+	}
 
     public function getId(): ?int
     {
@@ -225,48 +231,79 @@ class User implements UserInterface
 	 * @return mixed
 	 */
 	public function getToken()
-	{
-		return $this->token;
-	}
+               	{
+               		return $this->token;
+               	}
 
 	/**
 	 * @param mixed $token
 	 */
 	public function setToken($token): void
-	{
-		$this->token = $token;
-	}
+               	{
+               		$this->token = $token;
+               	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getRegistrationDate()
-	{
-		return $this->registrationDate;
-	}
+               	{
+               		return $this->registrationDate;
+               	}
 
 	/**
 	 * @param mixed $registrationDate
 	 */
 	public function setRegistrationDate($registrationDate): void
-	{
-		$this->registrationDate = $registrationDate;
-	}
+               	{
+               		$this->registrationDate = $registrationDate;
+               	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getAvatar()
-	{
-		return $this->avatar;
-	}
+               	{
+               		return $this->avatar;
+               	}
 
 	/**
 	 * @param mixed $avatar
 	 */
 	public function setAvatar($avatar): void
-	{
-		$this->avatar = $avatar;
-	}
+               	{
+               		$this->avatar = $avatar;
+               	}
+
+    /**
+     * @return Collection|Advert[]
+     */
+    public function getAdverts(): Collection
+    {
+        return $this->adverts;
+    }
+
+    public function addAdvert(Advert $advert): self
+    {
+        if (!$this->adverts->contains($advert)) {
+            $this->adverts[] = $advert;
+            $advert->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvert(Advert $advert): self
+    {
+        if ($this->adverts->contains($advert)) {
+            $this->adverts->removeElement($advert);
+            // set the owning side to null (unless already changed)
+            if ($advert->getAuthor() === $this) {
+                $advert->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

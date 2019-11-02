@@ -114,16 +114,11 @@ class Contact
      */
     private $civilite;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Advert", mappedBy="author")
-     */
-    private $advert;
 
     public function __construct()
     {
         $this->repere = new ArrayCollection();
         $this->reperesExistants = new ArrayCollection();
-        $this->advert = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -370,37 +365,6 @@ class Contact
     public function setAdresse2(?string $adresse2): self
     {
         $this->adresse2 = $adresse2;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Advert[]
-     */
-    public function getAdvert(): Collection
-    {
-        return $this->advert;
-    }
-
-    public function addAdvert(Advert $advert): self
-    {
-        if (!$this->advert->contains($advert)) {
-            $this->advert[] = $advert;
-            $advert->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdvert(Advert $advert): self
-    {
-        if ($this->advert->contains($advert)) {
-            $this->advert->removeElement($advert);
-            // set the owning side to null (unless already changed)
-            if ($advert->getAuthor() === $this) {
-                $advert->setAuthor(null);
-            }
-        }
 
         return $this;
     }
