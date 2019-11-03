@@ -30,21 +30,14 @@ class UserRegisterType extends AbstractType
 	            	'class' => 'form-control m-input'
 	            ]
             ])
-	        ->add('password', PasswordType::class, [
-	        	'required' => false,
-		        'attr' => [
-			        'class' => 'form-control m-input'
-		        ]
+	        ->add('password', RepeatedType::class, [
+	        	'type' => PasswordType::class,
+		        'label' => false,
+		        'invalid_message' => 'Les deux champs de mot de passe ne se correspondent pas !',
+		        'required' => true,
+		        'first_options'  => ['label' => 'Password'],
+		        'second_options' => ['label' => 'Repeat Password'],
 	        ])
-	        /*->add('password_2', PasswordType::class, [
-		        'required' => false,
-		        'constraints' => new NotBlank(),
-		        'label' => 'repeat password',
-		        'mapped' => false,
-		        'attr' => [
-			        'class' => 'form-control m-input'
-		        ]
-	        ])*/
             ->add('lastName', TextType::class,[
             	'required' => false,
 	            'attr' => [
