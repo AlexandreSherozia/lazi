@@ -20,7 +20,7 @@ class ContactFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('civilite', ChoiceType::class, [
+            ->add('civility', ChoiceType::class, [
                 'required' => false,
                 'label' => false,
                 'placeholder' => false,
@@ -28,42 +28,20 @@ class ContactFormType extends AbstractType
                     'F' => 'Mme.',
                     'M' => 'Mr.',
                 ],
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false,
             ])
-            ->add('nom', TextType::class, [
+            ->add('mobile2', TelType::class, [
                 'required' => false,
                 'label' => false,
-                'attr' => [
-                    'class' => 'form-control m_input',
-                    'placeholder' => 'Nom',
-                ]
-            ])
-            ->add('prenom',TextType::class, [
-                'required' => false,
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control m_input',
-                    'placeholder' => 'Prénom',
-                ]
-            ])
-            ->add('telPortable', TelType::class, [
-                'required' => false,
-                'label' => false,
-                'data' => '0033',
+//                'data' => '0033',
                 'attr' => [
                     'class' => 'form-control m_input phone-number',
-                    'placeholder' => 'Portable'
+                    'placeholder' => 'Portable',
+                    'autocomplete' => 'nope'
                 ]
             ])
-            ->add('telPortable2', TelType::class, [
-                'required' => false,
-                'label' => false,
-                'attr' => [
-                    'class' => 'form-control m_input phone-number',
-                    'placeholder' => 'Portable'
-                ]
-            ])
+
             ->add('emailContact', EmailType::class, [
                 'required' => false,
                 'label' => false,
@@ -72,27 +50,24 @@ class ContactFormType extends AbstractType
                     'placeholder' => 'Email'
                 ]
             ])
-            ->add('dateNaissance', TextType::class, [
+            ->add('birthDate', TextType::class, [
                 'required' => false,
                 'label' => false,
                 'attr' => [
-                    'class' => 'form-control m-input m_datepicker_1',
-                    'placeholder' => 'Naissance'
+                    'placeholder' => 'Date de naissance'
                 ]
             ])
-            ->add('isPrivileged', CheckboxType::class, [
+            ->add('address', TextType::class, [
                 'required' => false,
                 'label' => false
             ])
-            ->add('adresse', TextType::class, [
-                'required' => false,
-                'label' => false
-            ])
-            ->add('adresse2', TextType::class, [
-                'required' => false,
-                'label' => false
-            ])
-            ->add('ville', TextType::class, [
+
+	        ->add('zipCode', TextType::class, [
+		        'required' => false,
+		        'label' => false
+	        ])
+
+            ->add('city', TextType::class, [
                 'required' => false,
                 'label' => false
             ])

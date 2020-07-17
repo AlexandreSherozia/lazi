@@ -33,7 +33,7 @@ class UserRegisterType extends AbstractType
 	        ->add('password', RepeatedType::class, [
 	        	'type' => PasswordType::class,
 		        'label' => false,
-		        'invalid_message' => 'Les deux champs de mot de passe ne se correspondent pas !',
+		        'invalid_message' => 'Les deux champs de mot de passe ne sont pas identiques !',
 		        'required' => true,
 		        'first_options'  => ['label' => 'Password'],
 		        'second_options' => ['label' => 'Repeat Password'],

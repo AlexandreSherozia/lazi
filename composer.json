@@ -7,7 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "doctrine/annotations": "^1.6",
-        "knplabs/knp-paginator-bundle": "^3.0",
+        "knplabs/knp-paginator-bundle": "v4",
         "ninsuo/symfony-collection": "^2.1",
         "ovh/ovh": "^2.0",
         "sensio/framework-extra-bundle": "^5.3",

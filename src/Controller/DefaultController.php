@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\AdvertRepository;
 use App\Repository\ContactRepository;
 use App\Repository\EnterpriseRepository;
+use App\Repository\RouteRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -23,15 +24,21 @@ class DefaultController extends AbstractController
 	 * @var AdvertRepository
 	 */
 	private $advertRepository;
+	/**
+	 * @var RouteRepository
+	 */
+	private $routeRepository;
 
 	/**
 	 * DefaultController constructor.
 	 *
 	 * @param AdvertRepository $advertRepository
+	 * @param RouteRepository  $routeRepository
 	 */
-	public function __construct(AdvertRepository $advertRepository)
+	public function __construct(AdvertRepository $advertRepository, RouteRepository $routeRepository)
     {
 	    $this->advertRepository = $advertRepository;
+	    $this->routeRepository = $routeRepository;
     }
 
 	/**
@@ -44,15 +51,16 @@ class DefaultController extends AbstractController
     public function index(Request $request, PaginatorInterface $paginator)
     {
 	    $adverts = $this->advertRepository->findBy([],['createdAt'=>'DESC']);
+	    $menuItems = $this->routeRepository->findAll();
 
-	    $paginatation = $paginator->paginate(
-		    $adverts, /* query NOT result */
-		    $request->query->getInt('page', 1), /*page number*/
-		    5 /*limit per page*/
+	    $pagination = $paginator->paginate(
+		    $adverts,
+		    $request->query->getInt('page', 1),
+		    5
 	    );
-
         return $this->render('default/index.html.twig', [
-            'adverts' => $paginatation,
+            'adverts' => $pagination,
+	        'menuItems' => $menuItems
 
         ]);
     }

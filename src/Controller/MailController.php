@@ -64,7 +64,7 @@ class MailController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->mailer->sendEmail($messenger);
+//            $this->mailer->sendEmail($messenger, );
 
             $this->messengerManager->execute($messenger);
             $this->addFlash('success', 'Le mail a été envoyé avec succès !');

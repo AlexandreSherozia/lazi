@@ -14,7 +14,7 @@ class AvatarUploader
 	 *
 	 * @param string $avatarDir the directory where avatars pictures will be stored
 	 */
-	public function __construct(string $avatarDir)
+	public function __construct(?string $avatarDir)
 	{
 		$this->avatarDir = $avatarDir;
 	}

@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Entity\Advert;
 use App\Form\AdvertType;
 use App\Repository\AdvertRepository;
+use App\Repository\RouteRepository;
 use App\Service\AdvertManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,10 @@ class AdvertController extends AbstractController
 	 * @var AdvertManager
 	 */
 	private $advertManager;
+	/**
+	 * @var RouteRepository
+	 */
+	private $routeRepository;
 
 	/**
 	 * AdvertController constructor.
@@ -38,10 +43,11 @@ class AdvertController extends AbstractController
 	 * @param AdvertRepository $advertRepository
 	 * @param AdvertManager    $advertManager
 	 */
-	public function __construct(AdvertRepository $advertRepository, AdvertManager $advertManager)
+	public function __construct(AdvertRepository $advertRepository, AdvertManager $advertManager, RouteRepository $routeRepository)
 	{
 		$this->advertRepository = $advertRepository;
 		$this->advertManager = $advertManager;
+		$this->routeRepository = $routeRepository;
 	}
 
 
@@ -57,9 +63,12 @@ class AdvertController extends AbstractController
 
 		$form->handleRequest($request);
 
+		$menuItems = $this->routeRepository->findAll();
+
 		if ($form->isSubmitted() && $form->isValid()) {
 
 			$advertData = $form->getData();
+
 			$this->advertManager->insert($advertData);
 
 			$this->addFlash('success', $advertData->getTitle() .' a été créé avec succès !');
@@ -68,6 +77,7 @@ class AdvertController extends AbstractController
 		}
 		return $this->render('/forms/advert_create_edit.html.twig', [
 			'advertForm' => $form->createView(),
+			'menuItems' => $menuItems,
 			'create' => true,
 		]);
 	}
@@ -83,6 +93,7 @@ class AdvertController extends AbstractController
 		$advert = $this->advertRepository->findOneBy(['slug'=>$slug]);
 		$form = $this->createForm(AdvertType::class, $advert);
 		$form->handleRequest($request);
+		$menuItems = $this->routeRepository->findAll();
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$advertData = $form->getData();
@@ -94,6 +105,7 @@ class AdvertController extends AbstractController
 		}
 		return $this->render('forms/advert_create_edit.html.twig', [
 			'advertForm' => $form->createView(),
+			'menuItems' => $menuItems,
 			'edit' => true
 		]);
 	}

@@ -8,9 +8,12 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/login", name="app_login")
-     */
+	/**
+	 * @Route("/login", name="app_login")
+	 * @param AuthenticationUtils $authenticationUtils
+	 *
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
     public function login(AuthenticationUtils $authenticationUtils)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -28,6 +31,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \Exception('FFCB logout');
+        throw new \Exception('LAZI logout');
     }
 }

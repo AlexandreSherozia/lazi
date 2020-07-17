@@ -9,6 +9,7 @@
 namespace App\Service;
 
 use App\Entity\Messenger;
+use App\Entity\User;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Security;
 use Twig\Error\LoaderError;
@@ -37,6 +38,8 @@ class Mailer
 	/**
 	 * @param Form $form
 	 *
+	 * @param      $token
+	 *
 	 * @throws LoaderError
 	 * @throws RuntimeError
 	 * @throws SyntaxError
@@ -44,9 +47,6 @@ class Mailer
     public function sendEmail(Form $form, $token): void
     {
         $emailString = $form->getData()->getEmail();
-//        $emailString = 'alexandresherozia@yahoo.fr';
-
-	    // REGLER AVEC LES DONNEES VALIDES
 
         //"Objet :" field
         $message = new \Swift_Message('Hey, lazimate');
@@ -55,15 +55,42 @@ class Mailer
         $message->setFrom('sandrosherozia@gmail.com')
             ->setTo($emailString);
 
-        $message
-            ->setBody(
-                $this->templating->render(
-                    'emailing/emailing_template_message.html.twig',
-                    array('content' => 'You\'ve registered with success, but you have to validate it' )
-                ),
-                'text/html'
-            );
+	    $message
+		    ->setBody(
+			    $this->templating->render(
+				    'emailing/emailing_template_message.html.twig', [
+				    	'user' => $form->getData(),
+					    'token' => $token
+				    ]
+			    ),
+			    'text/html'
+		    );
 
         $this->swift_mailer->send($message);
     }
+
+	public function sendEmailFormPasswordInitializer(User $user): void
+	{
+		$emailString = $user->getEmail();
+
+		//"Objet :" field
+		$message = new \Swift_Message('Forgotten password');
+
+		//"De :" field
+		$message->setFrom('sandrosherozia@gmail.com')
+			->setTo($emailString);
+
+		$message
+			->setBody(
+				$this->templating->render(
+					'emailing/emailing_template_message.html.twig', [
+						'user' => $user,
+						'token' => $user->getToken()
+					]
+				),
+				'text/html'
+			);
+
+		$this->swift_mailer->send($message);
+	}
 }

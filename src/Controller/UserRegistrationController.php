@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\Handler\UserHandler;
 use App\Form\UserRegisterType;
+use App\Repository\UserRepository;
 use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,38 +52,13 @@ class UserRegistrationController extends AbstractController
 		$form = $this->createForm(UserRegisterType::class, $user);
 
 		if($this->userHandler->process('new',$form, $request)) {
-//			dd($request->request->all());
+
 			return $this->redirectToRoute('waiting_for_confirmation');
 		}
 		return $this->render('user_registration/index.html.twig',  [
 			'userRegisterForm' => $form->createView()
 		]);
 	}
-    /*public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-    {
-    	$user = new User();
-    	$form = $this->createForm(UserRegisterType::class, $user);
-    	$form->handleRequest($request);
-
-    	if ($form->isSubmitted() && $form->isValid()) {
-			dd($form);
-    		$data = $form->getData();
-    		$password = $passwordEncoder->encodePassword($user,$data->getPassword());
-
-    		$user->setPassword($password);
-			$user->setRoles($user->getRoles());
-
-    		$em = $this->getDoctrine()->getManager();
-    		$em->persist($user);
-    		$em->flush();
-
-    		return $this->redirectToRoute('app_homepage');
-	    }
-
-        return $this->render('user_registration/index.html.twig', [
-            'userRegisterForm' => $form->createView()
-        ]);
-    }*/
 
 	/**
 	 * Inform that a mail has been sent after registration
@@ -94,5 +70,27 @@ class UserRegistrationController extends AbstractController
 	public function confirm()
 	{
 		return $this->render('mail/confirm.html.twig');
+	}
+
+	/**
+	 * Depuis le mail on arrive sur ce contrôleur , qui vérifie le token
+	 * @param string         $token
+	 * @param UserRepository $userRepository
+	 *
+	 * @Route("/activate/account/{token}", name="activate_users_account")
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	public function activate(string $token, UserRepository $userRepository)
+	{
+		$user = $userRepository->findOneBy(['token' => $token]);
+
+		if ($user) {
+			$this->userManager->activateUser($user);
+
+			$this->addFlash('success', 'Salut '.$user->getFirstName() .' '.$user->getLastName().', ton compte a été activé avec succès ! Tu peux te connecter dès maintenant!');
+			return $this->redirectToRoute('app_login');
+		}
+		$this->addFlash('error', "Ce compte n'existe pas !");
+		return $this->redirectToRoute('waiting_for_confirmation');
 	}
 }

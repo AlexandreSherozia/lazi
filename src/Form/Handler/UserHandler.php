@@ -51,8 +51,9 @@ class UserHandler
 
 		$this->currentAvatar = $form->getData()->getAvatar();
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+
 //		dd($form->getData());
+		if ($form->isSubmitted() /*&& $form->isValid()*/) {
 			if ($type === 'new') {
 				// the process is for a registration
 				$token = $this->tokenizerForAccountValidation();

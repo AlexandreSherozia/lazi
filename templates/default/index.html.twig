@@ -6,6 +6,7 @@
 
 
 {% block content %}
+    {% include '_includes/_header.html.twig' %}
     <!-- begin:: Page -->
     <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
         <div class="m-grid__item m-grid__item--fluid m-wrapper">
@@ -19,73 +20,74 @@
                                     {{ advert.title|upper }}
                                 </h3>
                                 <span class="datetime">
-                                    <span class="datetime_color"><i
-                                                class="flaticon-calendar-with-a-clock-time-tools"></i>
-                                        <span style="margin-left: 5px">{{ advert.createdAt|date('d-m-Y H:i') }}</span>
-                                    </span>
+                                <span class="datetime_color"><i
+                                            class="flaticon-calendar-with-a-clock-time-tools"></i>
+                                    <span style="margin-left: 5px">{{ advert.createdAt|date('d-m-Y H:i') }}</span>
                                 </span>
+                            </span>
                                 <span class="author">
-                                    <span class="admin">par l'administration</span>
-                                </span>
+                                <span class="admin">par l'administration</span>
+                            </span>
                             </div>
                         </div>
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}
-                            <div class="m-portlet__head-tools">
-                                <ul class="m-portlet__nav">
-                                    <li class="m-portlet__nav-item">
-                                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
-                                             m-dropdown-toggle="hover" aria-expanded="true">
-                                            <a href="#"
-                                               class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
-                                                <i class="la la-ellipsis-h m--font-brand"></i>
-                                            </a>
-                                            <div class="m-dropdown__wrapper" style="z-index: 101;">
-                                                <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"
-                                                      style="left: auto; right: 21.5px;"></span>
-                                                <div class="m-dropdown__inner">
-                                                    <div class="m-dropdown__body">
-                                                        <div class="m-dropdown__content">
-                                                            <ul class="m-nav">
-                                                                <li class="m-nav__section m-nav__section--first">
-                                                                    <span class="m-nav__section-text">Réservé à l'administration Lazi</span>
-                                                                </li>
-                                                                <li class="m-nav__item">
-                                                                    <a href="{{ path('create_advert') }}"
-                                                                       class="m-nav__link">
-                                                                        <i class="m-nav__link-icon flaticon-share"></i>
-                                                                        <span class="m-nav__link-text">Créer un nouveau Post</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="m-nav__item">
-                                                                    <a href="{{ path('edit_advert', {'slug':advert.slug }) }}"
-                                                                       class="m-nav__link">
-                                                                        <i class="m-nav__link-icon flaticon-chat-1"></i>
-                                                                        <span class="m-nav__link-text">Modifier</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="m-nav__item">
-                                                                    <a href="" class="m-nav__link">
-                                                                        <i class="m-nav__link-icon flaticon-multimedia-2"></i>
-                                                                        <span class="m-nav__link-text">Archiver</span>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="m-nav__item">
-                                                                    <a href="javascript:" class="m-nav__link">
-                                                                        <i class="m-nav__link-icon flaticon-multimedia-2"></i>
-                                                                        <span class="m-nav__link-text">Supprimer le post</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
+                        {% if is_granted('ROLE_USER') %}
+
+{#                                {% if app.user.isSuperAdmin %}#}
+                                <div class="m-portlet__head-tools">
+                                    <ul class="m-portlet__nav">
+                                        <li class="m-portlet__nav-item">
+                                            <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push"
+                                                 m-dropdown-toggle="hover" aria-expanded="true">
+                                                <a href="#"
+                                                   class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+                                                    <i class="la la-ellipsis-h m--font-brand"></i>
+                                                </a>
+                                                <div class="m-dropdown__wrapper" style="z-index: 101;">
+                                            <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"
+                                                  style="left: auto; right: 21.5px;"></span>
+                                                    <div class="m-dropdown__inner">
+                                                        <div class="m-dropdown__body">
+                                                            <div class="m-dropdown__content">
+                                                                <ul class="m-nav">
+                                                                    <li class="m-nav__section m-nav__section--first">
+                                                                        <span class="m-nav__section-text">Réservé à l'administration Lazi</span>
+                                                                    </li>
+                                                                    <li class="m-nav__item">
+                                                                        <a href="{{ path('create_advert') }}"
+                                                                           class="m-nav__link">
+                                                                            <i class="m-nav__link-icon flaticon-share"></i>
+                                                                            <span class="m-nav__link-text">Créer un nouveau Post</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="m-nav__item">
+                                                                        <a href="{{ path('edit_advert', {'slug':advert.slug }) }}"
+                                                                           class="m-nav__link">
+                                                                            <i class="m-nav__link-icon flaticon-chat-1"></i>
+                                                                            <span class="m-nav__link-text">Modifier</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="m-nav__item">
+                                                                        <a href="" class="m-nav__link">
+                                                                            <i class="m-nav__link-icon flaticon-multimedia-2"></i>
+                                                                            <span class="m-nav__link-text">Archiver</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="m-nav__item">
+                                                                        <a href="javascript:" class="m-nav__link">
+                                                                            <i class="m-nav__link-icon flaticon-multimedia-2"></i>
+                                                                            <span class="m-nav__link-text">Supprimer le post</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                         {% endif %}
-
                     </div>
                     <div class="main_adverts">
                         {{ advert.content|raw }}

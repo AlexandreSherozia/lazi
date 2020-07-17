@@ -21,351 +21,197 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
      */
-    private $typeContact;
+    private $mobile2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Nom requis")
-     */
-    private $nom;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Prénom requis")
-     */
-    private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Portable requis")
-     */
-    private $telPortable;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $telPortable2;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $telBureau;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message="Email requis")
      */
     private $emailContact;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private $dateNaissance;
+    private $birthDate;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $commentaire;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $adresse;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $adresse2;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $ville;
-
-    /**
-     * @ORM\Column(type="string", length=60, nullable=true)
-     */
-    private $codePostal;
-
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="contact", cascade={"persist", "remove"})
-     */
-    private $userInterface;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Repere", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $repere;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Repere", inversedBy="contacts")
-     * @ORM\JoinTable(name="contact_reperes")
-     */
-    private $reperesExistants;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $civilite;
-
-
-    public function __construct()
-    {
-        $this->repere = new ArrayCollection();
-        $this->reperesExistants = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTypeContact(): ?string
-    {
-        return $this->typeContact;
-    }
-
-    public function setTypeContact(string $typeContact): self
-    {
-        $this->typeContact = $typeContact;
-
-        return $this;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getTelPortable(): ?string
-    {
-        return $this->telPortable;
-    }
-
-    public function setTelPortable(?string $telPortable): self
-    {
-        $this->telPortable = $telPortable;
-
-        return $this;
-    }
-
-    public function getTelBureau(): ?string
-    {
-        return $this->telBureau;
-    }
-
-    public function setTelBureau(?string $telBureau): self
-    {
-        $this->telBureau = $telBureau;
-
-        return $this;
-    }
-
-    public function getEmailContact(): ?string
-    {
-        return $this->emailContact;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDateNaissance()
-    {
-        return $this->dateNaissance;
-    }
-
-    /**
-     * @param mixed $dateNaissance
-     * @return Contact
-     */
-    public function setDateNaissance($dateNaissance)
-    {
-        $this->dateNaissance = $dateNaissance;
-        return $this;
-    }
-
-    public function setEmailContact(?string $emailContact): self
-    {
-        $this->emailContact = $emailContact;
-
-        return $this;
-    }
-
-    public function getCommentaire(): ?string
-    {
-        return $this->commentaire;
-    }
-
-    public function setCommentaire(?string $commentaire): self
-    {
-        $this->commentaire = $commentaire;
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection|Repere[]
-     */
-    public function getRepere(): Collection
-    {
-        return $this->repere;
-    }
-
-    public function addRepere(Repere $repere): self
-    {
-        if (!$this->repere->contains($repere)) {
-            $this->repere[] = $repere;
-        }
-
-        return $this;
-    }
-
-    public function removeRepere(Repere $repere): self
-    {
-        if ($this->repere->contains($repere)) {
-            $this->repere->removeElement($repere);
-        }
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(?string $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?string $ville): self
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
-    public function getCodePostal(): ?string
-    {
-        return $this->codePostal;
-    }
-
-    public function setCodePostal(?string $codePostal): self
-    {
-        $this->codePostal = $codePostal;
-
-        return $this;
-    }
-
-
-    public function getUserInterface(): ?User
-    {
-        return $this->userInterface;
-    }
-
-    public function setUserInterface(?User $userInterface): self
-    {
-        $this->userInterface = $userInterface;
-
-        return $this;
-    }
-
-
-
-    /**
-     * @return Collection|Repere[]
-     */
-    public function getReperesExistants(): Collection
-    {
-        return $this->reperesExistants;
-    }
-
-    public function addReperesExistant(Repere $reperesExistant): self
-    {
-        if (!$this->reperesExistants->contains($reperesExistant)) {
-            $this->reperesExistants[] = $reperesExistant;
-        }
-
-        return $this;
-    }
-
-    public function removeReperesExistant(Repere $reperesExistant): self
-    {
-        if ($this->reperesExistants->contains($reperesExistant)) {
-            $this->reperesExistants->removeElement($reperesExistant);
-        }
-
-        return $this;
-    }
-
-    public function getCivilite(): ?string
-    {
-        return $this->civilite;
-    }
-
-    public function setCivilite(?string $civilite): self
-    {
-        $this->civilite = $civilite;
-
-        return $this;
-    }
-
-
-    public function getTelPortable2(): ?string
-    {
-        return $this->telPortable2;
-    }
-
-    public function setTelPortable2(?string $telPortable2): self
-    {
-        $this->telPortable2 = $telPortable2;
-
-        return $this;
-    }
-
-    public function getAdresse2(): ?string
-    {
-        return $this->adresse2;
-    }
-
-    public function setAdresse2(?string $adresse2): self
-    {
-        $this->adresse2 = $adresse2;
-
-        return $this;
-    }
+    private $city;
+
+	/**
+	 * @ORM\Column(type="string", length=60, nullable=true)
+	 */
+	private $zipCode;
+
+
+	/**
+	 * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="contact", cascade={"persist", "remove"})
+	 */
+	private $userInterface;
+
+	/**
+	 * @ORM\Column(type="string", length=255, nullable=true)
+	 */
+	private $civility;
+
+
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getMobile2()
+	{
+		return $this->mobile2;
+	}
+
+	/**
+	 * @param mixed $mobile2
+	 */
+	public function setMobile2($mobile2): void
+	{
+		$this->mobile2 = $mobile2;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getEmailContact()
+	{
+		return $this->emailContact;
+	}
+
+	/**
+	 * @param mixed $emailContact
+	 */
+	public function setEmailContact($emailContact): void
+	{
+		$this->emailContact = $emailContact;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getBirthDate()
+	{
+		return $this->birthDate;
+	}
+
+	/**
+	 * @param mixed $birthDate
+	 */
+	public function setBirthDate($birthDate): void
+	{
+		$this->birthDate = $birthDate;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCommentaire()
+	{
+		return $this->commentaire;
+	}
+
+	/**
+	 * @param mixed $commentaire
+	 */
+	public function setCommentaire($commentaire): void
+	{
+		$this->commentaire = $commentaire;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	/**
+	 * @param mixed $address
+	 */
+	public function setAddress($address): void
+	{
+		$this->address = $address;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	/**
+	 * @param mixed $city
+	 */
+	public function setCity($city): void
+	{
+		$this->city = $city;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getZipCode()
+	{
+		return $this->zipCode;
+	}
+
+	/**
+	 * @param mixed $zipCode
+	 */
+	public function setZipCode($zipCode): void
+	{
+		$this->zipCode = $zipCode;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUserInterface()
+	{
+		return $this->userInterface;
+	}
+
+	/**
+	 * @param mixed $userInterface
+	 */
+	public function setUserInterface($userInterface): void
+	{
+		$this->userInterface = $userInterface;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getCivility()
+	{
+		return $this->civility;
+	}
+
+	/**
+	 * @param mixed $civility
+	 */
+	public function setCivility($civility): void
+	{
+		$this->civility = $civility;
+	}
 }

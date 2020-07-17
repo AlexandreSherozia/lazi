@@ -1,1 +1,15 @@
-{{ content|raw }}
+{#{% extends "base.html.twig" %}#}
+
+{% block content %}
+
+    <p>Bonjour <span>{{ user.firstName }} {{ user.lastName }}</span></p>
+    {% if token is defined %}
+        <p>je te laisse activer ton compte en suivant ce <a href="{{ url('activate_users_account',{'token':token}) }}">lien</a>
+        </p>
+    {% else %}
+        <p>Tu as oublié ton mot de passe ? </p>
+        <p>C'est simplissime ! va sur ce <a href="{{ url('initialize_password') }}">lien</a> et créés un nouveau mot de passe !</p>
+    {% endif %}
+
+{% endblock %}
+

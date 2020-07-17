@@ -1,18 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
 {% block content %}
+    {% include '_includes/_header.html.twig' %}
+
     <div class="m-grid m-grid--hor m-grid--root m-page" id="ffcb_login_form">
         <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-2" id="m_login" style="background-image: url(../../../assets/app/media/img//bg/bg-3.jpg);">
             <div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
                 <div class="m-login__container">
                     <div class="m-login__logo">
                         <a href="javascript:">
-                            <img src="{{ asset('ffcb_logo/ffcb.png') }}">
+                            <img style="width: 85px;" src="{{ asset('lazi_logos/lazi_logo_alpha.png') }}">
                         </a>
                     </div>
                     <div class="m-login__signin">
                         <div class="m-login__head">
-                            <h3 class="m-login__title">Sign In To Admin</h3>
+                            <h3 class="m-login__title">Sign in</h3>
                         </div>
                         <form class="m-login__form m-form" method="post">
 
@@ -35,9 +37,9 @@
                                         <span></span>
                                     </label>
                                 </div>
-                                {#<div class="col m--align-right m-login__form-right">
-                                    <a href="javascript:;" id="m_login_forget_password" class="m-link">Mot de passe oublié ?</a>
-                                </div>#}
+                                <div class="col m--align-right m-login__form-right">
+                                    <a href="{{ path('send_email_for_password_initializer') }}" id="m_login_forget_password" class="m-link">Mot de passe oublié ?</a>
+                                </div>
                             </div>
                             <div class="m-login__form-action">
                                 <button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">Connexion</button>

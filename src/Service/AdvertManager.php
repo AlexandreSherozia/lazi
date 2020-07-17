@@ -36,10 +36,11 @@ class AdvertManager
 		$this->security = $security;
 	}
 
-	public function insert(Advert $advert)
+	public function insert(Advert $advertData)
 	{
-		$advert->setAuthor($this->security->getToken()->getUser());
-		$this->entityManager->persist($advert);
+		$advertData->setAuthor($this->security->getToken()->getUser());
+//		dd($advertData->getIsOnMainPage());
+		$this->entityManager->persist($advertData);
 		$this->entityManager->flush();
 	}
 }

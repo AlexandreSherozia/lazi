@@ -16,6 +16,7 @@ security:
             security: false
         main:
             anonymous: true
+            user_checker: App\Security\UserChecker
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
@@ -23,7 +24,9 @@ security:
                 entry_point: App\Security\LoginFormAuthenticator
 
             logout:
-                path: app_logout
+                path: /logout
+                target: /
+                invalidate_session: true
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -46,5 +49,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: ROLE_PROGRAMMER }
+         - { path: ^/admin, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }

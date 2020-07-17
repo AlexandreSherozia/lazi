@@ -1,81 +1,261 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ parent() }} Créer Groupes
+    {{ parent() }} Editer Utilisateur
 {% endblock %}
 
 {% block content %}
+    {% include '_includes/_header.html.twig' %}
     <div class="container">
 
-        <div class="m-login__logo text-center">
-            <a href="javascript:">
-                <img src="{{ asset('ffcb_logo/ffcb.png') }}">
-            </a>
-        </div>
+        {{ form_start(userForm, {'attr': {'id': 'm-form', 'class': 'm-form__group form-group'}}) }}
 
-        {{ form_start(userForm, {'attr': {'id': 'ffcb_admin_user', 'class': 'm-form__group form-group'}}) }}
         <div class="row">
-            <fieldset class="col-lg-6 ffcb-selector-border">
-                <legend class="col-lg-7">{{'édition d\'Utilisateur'|capitalize}}</legend>
+            <div class="col-lg-12">
 
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-3 col-form-label">Email :</label>
-                    <div class="offset-1 col-lg-8">
-                        <span style="color: #fe0017">{{ form_errors(userForm.email) }}</span>
-                        {{ form_widget(userForm.email, {'attr': {'class': 'form-control'}}) }}
+                <!--begin::Portlet-->
+                <div class="m-portlet m-portlet--last m-portlet--head-lg m-portlet--responsive-mobile" id="main_portlet"
+                     style="margin-top: 50px;padding-top: 50px">
 
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-3 col-form-label">Prénom :</label>
-                    <div class="offset-1 col-lg-8">
-                        <span style="color: #fe0017">{{ form_errors(userForm.firstName) }}</span>
-                        {{ form_widget(userForm.firstName, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-3 col-form-label">Nom :</label>
-                    <div class="offset-1 col-lg-8">
-                        <span style="color: #fe0017">{{ form_errors(userForm.lastName) }}</span>
-                        {{ form_widget(userForm.lastName, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                </div>
-                <div class="form-group m-form__group row">
-                    <label for="example-text-input" class="col-3 col-form-label">Personnaliser M.p. :</label>
-                    <div class="offset-1 col-lg-8">
-                        <span style="color: #fe0017">{{ form_errors(userForm.password) }}</span>
-                        {{ form_widget(userForm.password, {'attr': {'class': 'form-control'}}) }}
-                    </div>
-                </div>
+                    <div class="m-portlet__body">
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <hr>
+                        <!--begin: Form Body -->
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-xl-10" style="margin: auto">
+                                    <div class="m-form__section m-form__section--first">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Profil
+                                                de {{ user.firstName }} {{ user.lastName }} :
+                                            </h3>
+                                        </div>
+                                        <div class="form-group m-form__group row" style="margin-top: 30px">
 
-                    <label> Assignez un droit à l'utilisateur</label>
-                    <div class="row">
-                        {#<span style="color: #fe0017">{{ form_errors(userForm.roles) }}</span>#}
-                        {% for role in userForm.roles.children %}
-                            <div class="form-group m-form__group offset-1 col-lg-3 ffcb-selector-border">
-                                <label for="example-text-input" class="text-center">{{ form_label(role) }}</label>
-                                <div class="offset-1 col-lg-8 text-center">
-                                    {{ form_widget(role) }}
+                                            {# left side #}
+                                            <div class="col-lg-4 m-form__group-sub">
+                                                <label class="form-control-label">Tu peux mettre et modifier ta photo</label>
+
+                                                    <div class="separator img-thumbnail" style="width: 258px; height: 292px;overflow: hidden">
+                                                        {% if user.avatar %}
+                                                        <img src="{{ asset('images/avatars/' ~user.avatar) }}"
+                                                             alt="{{ user.firstName }}" style="width: 100%">
+                                                        {% endif %}
+                                                    </div>
+
+                                                <div class="separator">
+                                                    {{ form_widget(userForm.avatar, {'attr': {'class': 'form-control'}}) }}
+                                                    <span style="color: #fe0017">{{ form_errors(userForm.avatar) }}</span>
+                                                </div>
+                                            </div>
+
+                                            {# right side #}
+                                            <div class="col-lg-8 m-form__group-sub">
+                                                <div class="separator">
+                                                    <label class="form-control-label">* Civilité:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                        class="flaticon-infinity"></i></span>
+                                                        </div>
+                                                        {{ form_widget(userForm.contact.civility, {'attr': {'class': 'form-control'}}) }}
+                                                        <span style="color: #fe0017">{{ form_errors(userForm.contact.civility) }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="separator">
+                                                    <label class="form-control-label">* Prénom:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                        class="flaticon-users-1"></i></span>
+                                                        </div>
+                                                        {{ form_widget(userForm.firstName, {'attr': {'class': 'form-control'}}) }}
+                                                        <span style="color: #fe0017">{{ form_errors(userForm.firstName) }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="separator">
+                                                    <label class="form-control-label">* Nom:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i
+                                                                        class="flaticon-users-1"></i></span></div>
+                                                        {{ form_widget(userForm.lastName, {'attr': {'class': 'form-control'}}) }}
+                                                        <span style="color: #fe0017">{{ form_errors(userForm.lastName) }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="separator">
+                                                    <label class="form-control-label">* Email:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">@</span></div>
+                                                        {{ form_widget(userForm.email, {'attr': {'class': 'form-control'}}) }}
+                                                        <span style="color: #fe0017">{{ form_errors(userForm.email) }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="separator">
+                                                    <label class="form-control-label">* Téléphone:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text"><i
+                                                                        class="la la-phone"></i></span></div>
+                                                        {{ form_widget(userForm.mobile, {'attr': {'class': 'form-control'}}) }}
+                                                    </div>
+                                                    <span style="color: #fe0017">{{ form_errors(userForm.mobile) }}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-separator m-separator--dashed m-separator--lg"></div>
+
+                                    <div class="m-form__section">
+                                        <div class="m-form__heading separator">
+                                            <h3 class="m-form__heading-title">
+                                                Adresse :
+                                                <i data-toggle="m-tooltip" data-width="auto"
+                                                   class="m-form__heading-help-icon flaticon-info" title=""
+                                                   data-original-title="Some help text goes here"></i>
+                                            </h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">* Numéro et nom de la
+                                                rue:</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                    class="flaticon-pin"></i></span></div>
+                                                    {{ form_widget(userForm.contact.address, {'attr': {'class': 'form-control'}}) }}
+                                                    <span style="color: #fe0017">{{ form_errors(userForm.contact.address) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">* Code postal :</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                    class="flaticon-pin"></i></span></div>
+                                                    {{ form_widget(userForm.contact.zipCode, {'attr': {'class': 'form-control'}}) }}
+                                                    <span style="color: #fe0017">{{ form_errors(userForm.contact.zipCode) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">* Ville :</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                    class="flaticon-pin"></i></span></div>
+                                                    {{ form_widget(userForm.contact.city, {'attr': {'class': 'form-control'}}) }}
+                                                    <span style="color: #fe0017">{{ form_errors(userForm.contact.city) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group m-form__group row">
+                                            <label class="col-xl-3 col-lg-3 col-form-label">* Pays :</label>
+                                            <div class="col-xl-9 col-lg-9">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i
+                                                                    class="flaticon-pin"></i></span></div>
+                                                    <select name="country" class="form-control m-input">
+                                                        <option>France</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-separator m-separator--dashed m-separator--lg"></div>
+
+                                    <div class="m-form__section m-form__section--first">
+                                        <div class="m-form__heading">
+                                            <h3 class="m-form__heading-title">Informations importantes</h3>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">* Un autre email :</label>
+                                                {{ form_widget(userForm.contact.emailContact, {'attr': {'class': 'form-control'}}) }}
+                                                <span style="color: #fe0017">{{ form_errors(userForm.contact.emailContact) }}</span>
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">* Date de naissance :</label>
+                                                {{ form_widget(userForm.contact.birthDate, {'attr': {'class': 'form-control m_datepicker_1'}}) }}
+                                                <span style="color: #fe0017">{{ form_errors(userForm.contact.birthDate) }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">* Portable d'un parent ou personne
+                                                    responsable :</label>
+                                                {{ form_widget(userForm.contact.mobile2, {'attr': {'class': 'form-control'}}) }}
+                                                <span style="color: #fe0017">{{ form_errors(userForm.contact.mobile2) }}</span>
+                                            </div>
+                                            <div class="col-lg-6 m-form__group-sub">
+                                                <label class="form-control-label">* Password:</label>
+                                                {{ form_widget(userForm.password, {'attr': {'class': 'form-control'}}) }}
+                                                <span style="color: #fe0017">{{ form_errors(userForm.password) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="m-separator m-separator--dashed m-separator--lg"></div>
+
+                                    <div class="m-form__section">
+                                        <div class="form-group m-form__group row">
+                                            <div class="col-lg-12 m-form__group-sub">
+                                                <label class="form-control-label font-weight-bold">* Appartenance Groupe
+                                                    :</label>
+                                                <div class="m-radio-inline">
+                                                    <label class="m-radio m-radio--solid m-radio--brand">
+                                                        <input type="radio" name="account_group" checked="" value="2">
+                                                        Sales Person
+                                                        <span></span>
+                                                    </label>
+                                                    <label class="m-radio m-radio--solid m-radio--brand">
+                                                        <input type="radio" name="account_group" value="2"> Customer
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <span class="m-form__help">L'appartenance aux groupes est assigné par l'administration</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="m-separator m-separator--dashed m-separator--lg"></div>
+
+                                    <div style="text-align: right">
+                                        <div class="m-login__form-action">
+                                            <button id="m_login_signup_submit"
+                                                    class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air  m-login__btn">
+                                                Valider
+                                            </button>&nbsp;&nbsp;
+                                            <button id="m_login_signup_cancel"
+                                                    class="btn btn-outline-focus m-btn m-btn--pill m-btn--custom  m-login__btn">
+                                                Annuler
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="m-separator m-separator--dashed m-separator--lg"></div>
                                 </div>
 
                             </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-
-
-                {# SUBMIT #}
-                <div class="row">
-                    <div class="offset-8">
-                        <button type="submit" class="btn btn-primary" style="margin: 20px">Modifier</button>
+                        </div>
                     </div>
                 </div>
 
-            </fieldset>
+                <!--end::Portlet-->
+            </div>
         </div>
 
 
@@ -87,3 +267,17 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js') }}"
+            type="text/javascript"></script>
+    <script>
+        jQuery(document).ready(function () {
+            $(".select2").select2(
+                {placeholder: "*"}
+            );
+        });
+    </script>
+{% endblock %}
+

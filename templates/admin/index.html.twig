@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration{% endblock %}
+
+{% block body %}
+    {% include '_includes/_header.html.twig' %}
+
+    <div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
+        <div class="m-grid__item m-grid__item--fluid m-wrapper">
+
+            {{ form_start(routeForm, { 'attr' : { 'class': 'm-form', 'id': 'routeForm' }}) }}
+
+            <h3>Vous souhaitez rajouter une catégorie dans le menu ?</h3>
+
+            <div>Est-ce une catégorie principale ou sous-catégorie</div>
+            <div>{{ form_widget(routeForm.parent) }}</div>
+
+            <div>Entrez un nouveau nom de la catégorie</div>
+            <div>{{ form_widget(routeForm.name) }}</div>
+
+            <div>Rajoutez une icone</div>
+            <div>{{ form_widget(routeForm.bootstrapIcon) }}</div>
+
+
+
+            {# SUBMIT #}
+            <button type="submit" class="btn btn-primary">Soumettre</button>
+            <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+
+            {{ form_widget(routeForm._token) }}
+            {{ form_end(routeForm) }}
+
+        </div>
+    </div>
+{% endblock %}

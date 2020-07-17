@@ -44,10 +44,11 @@ class UserManager
 	    $this->userRepository = $userRepository;
     }
 
-    public function create(User $user)
+    public function create(User $user, $avataraName)
     {
         $this->flashBag->add('success',  $user->getFirstName() . ' ' . $user->getLastName() .' a bien été enregistré !');
         $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPassword()));
+        $user->setAvatar($avataraName);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
@@ -64,6 +65,8 @@ class UserManager
 			$this->passwordEncoder->encodePassword($user, $user->getPassword())
 		);
 		$user->setToken($token);
+		$user->setFirstName(ucfirst($user->getFirstName()));
+		$user->setLastName(ucfirst($user->getLastName()));
 		$this->entityManager->persist($user);
 		$this->entityManager->flush();
 
@@ -80,6 +83,14 @@ class UserManager
 	public function removeUser(User $user_id): void
 	{
 		$this->entityManager->remove($user_id);
+		$this->entityManager->flush();
+	}
+
+	public function activateUser(User $user)
+	{
+		$user->addRole('ROLE_USER');
+
+		$this->entityManager->persist($user);
 		$this->entityManager->flush();
 	}
 }

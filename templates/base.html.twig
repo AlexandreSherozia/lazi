@@ -36,13 +36,13 @@
     {% block body %}
 
         {#-------HEADER--------#}
-        {% include '_includes/_header.html.twig' %}
+{#        {% include '_includes/_header.html.twig' %}#}
 
         {# ASIDE MENU #}
         {#{% include '_includes/_asideMenu.html.twig' %}#}
 
         {#-------FLASHBAG MESSAGES--------#}
-        <div class="flashbag" style="margin-top: 20px;">
+        <div class="flashbag" style="margin-top: 90px;">
             {% for type, flashes in app.session.flashBag.all %}
                 {% for message in flashes %}
                     {% if type == 'success' %}
@@ -66,7 +66,8 @@
             {% endfor %}
         </div>
 
-
+</div>
+</body>
 
         {#---------MAIN CONTENT--------#}
         {% if 'app_homepage' == app.request.attributes.get('_route') %}

@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -63,8 +64,8 @@ class User implements UserInterface
 
 	/**
 	 * @ORM\Column(type="string", length=180, nullable=true)
-	 * @Assert\Image(mimeTypesMessage="asserts.article.image.mimetype",
-	 *     maxSize="1M", maxSizeMessage="asserts.article.image.maxsize")
+	 * @Assert\Image(mimeTypesMessage="Le format de la photo ne correspond pas",
+	 *     maxSize="1M", maxSizeMessage="L'image est supérieure à 1Mo")
 	 */
 	private $avatar;
 
@@ -74,7 +75,8 @@ class User implements UserInterface
     private $contact;
 
 	/**
-	 * @ORM\Column(type="datetime")
+	 * @ORM\Column(type="datetime", nullable=true)
+	 * @Assert\NotBlank(message="Date de naissance est obligatoire !")
 	 */
 	private $registrationDate;
 
@@ -88,12 +90,24 @@ class User implements UserInterface
      */
     private $adverts;
 
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 * @Gedmo\Slug(fields={"firstName", "lastName"}, unique=true, separator="-")
+	 */
+	private $slug;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\NotBlank(message="Numéro de téléphone est obligatoire !")
+     */
+    private $mobile;
+
 	public function __construct()
-	{
-		$this->registrationDate = new \DateTime();
-		$this->roles[]          = 'ROLE_VISITOR';
-		$this->adverts          = new ArrayCollection();
-	}
+         	{
+         		$this->registrationDate = new \DateTime();
+         		$this->roles[]          = 'ROLE_VISITOR';
+         		$this->adverts          = new ArrayCollection();
+         	}
 
     public function getId(): ?int
     {
@@ -130,18 +144,14 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles(): ?array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+		return $this->roles;
     }
 
-    public function setRoles(array $roles): self
+    public function addRole(string $role): self
     {
-        $this->roles = $roles;
+        $this->roles[] = $role;
 
         return $this;
     }
@@ -231,49 +241,49 @@ class User implements UserInterface
 	 * @return mixed
 	 */
 	public function getToken()
-               	{
-               		return $this->token;
-               	}
+         	{
+         		return $this->token;
+         	}
 
 	/**
 	 * @param mixed $token
 	 */
 	public function setToken($token): void
-               	{
-               		$this->token = $token;
-               	}
+         	{
+         		$this->token = $token;
+         	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getRegistrationDate()
-               	{
-               		return $this->registrationDate;
-               	}
+         	{
+         		return $this->registrationDate;
+         	}
 
 	/**
 	 * @param mixed $registrationDate
 	 */
 	public function setRegistrationDate($registrationDate): void
-               	{
-               		$this->registrationDate = $registrationDate;
-               	}
+         	{
+         		$this->registrationDate = $registrationDate;
+         	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getAvatar()
-               	{
-               		return $this->avatar;
-               	}
+         	{
+         		return $this->avatar;
+         	}
 
 	/**
 	 * @param mixed $avatar
 	 */
 	public function setAvatar($avatar): void
-               	{
-               		$this->avatar = $avatar;
-               	}
+         	{
+         		$this->avatar = $avatar;
+         	}
 
     /**
      * @return Collection|Advert[]
@@ -306,4 +316,49 @@ class User implements UserInterface
         return $this;
     }
 
+	/**
+	 * @param mixed $slug
+	 *
+	 * @return User
+	 */
+	public function setSlug($slug)
+	{
+		$this->slug = $slug;
+
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getSlug()
+	{
+		return $this->slug;
+	}
+
+	public function getMobile(): ?string
+	{
+		return $this->mobile;
+	}
+
+    public function setMobile(string $mobile): self
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+	public function isEnabled()
+	{
+		$roles = $this->getRoles();
+
+		return \in_array('ROLE_USER', $roles, true);
+	}
+
+	public function isSuperAdmin()
+	{
+		$roles = $this->getRoles();
+
+		return \in_array('ROLE_SUPER_ADMIN', $roles,true);
+	}
 }

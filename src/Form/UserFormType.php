@@ -50,7 +50,7 @@ class UserFormType extends AbstractType
                 'required' => false,
                 'label' => false
             ])
-//            ->add('contact')
+            ->add('contact', ContactFormType::class)
         ;
     }
 
